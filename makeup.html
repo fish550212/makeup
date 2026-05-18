@@ -144,8 +144,31 @@
         font-weight: 700;
       }
 
+      .total-btn {
+        width: 40px;
+        padding: 0;
+        background: #fff;
+        border: 1px solid var(--line);
+        color: var(--primary-dark);
+      }
+
+      .total-btn svg {
+        flex: 0 0 auto;
+      }
+
+      .total-amount-display {
+        color: var(--primary-dark);
+        font-size: 34px;
+        font-weight: 900;
+        text-align: center;
+      }
+
       .primary-btn:hover {
         background: var(--primary-dark);
+      }
+
+      .total-btn:hover {
+        background: var(--soft);
       }
 
       .back-btn {
@@ -319,6 +342,25 @@
         box-shadow: 0 8px 24px rgba(116, 39, 70, 0.06);
         overflow: hidden;
         cursor: pointer;
+        will-change: transform, opacity;
+      }
+
+      .card.sold-card {
+        border-color: #ddcbcb;
+        background: #f4f5f7;
+        box-shadow: none;
+        filter: grayscale(0.35);
+        .brand {
+          color: #8e8e8e;
+        }
+        .tag {
+          background: #dedede;
+          color: #939393;
+        }
+        .meta-shop {
+          background-color: #dfdfdf;
+          color: #626262;
+        }
       }
 
       .card-body {
@@ -332,8 +374,8 @@
       .card-top {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         gap: 10px;
-        margin-bottom: 14px;
       }
 
       .tag {
@@ -347,13 +389,42 @@
         font-weight: 700;
       }
 
+      .sold-status {
+        margin-left: auto;
+        color: #6b7280;
+        font-size: 12px;
+        font-weight: 800;
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      .checkbox-field {
+        display: flex;
+        align-items: center;
+        min-height: 38px;
+        gap: 8px;
+      }
+
+      .checkbox-field input {
+        width: auto;
+        accent-color: var(--primary);
+      }
+
+      .conditional-hidden {
+        display: none;
+      }
+
+      .field[hidden] {
+        display: none;
+      }
+
       .actions {
         display: flex;
         gap: 4px;
       }
 
       .brand {
-        margin: 0 0 6px;
+        margin: 0 0 0px;
         color: var(--primary);
         font-size: 12px;
         font-weight: 700;
@@ -505,6 +576,7 @@
         min-height: 0;
         padding: 20px;
         overflow: auto;
+        background: #fff;
       }
 
       #detailBody {
@@ -512,6 +584,7 @@
         flex-direction: column;
         gap: 0;
         padding: 0;
+        background: #fff;
         overflow: hidden;
       }
 
@@ -551,7 +624,7 @@
         padding: 8px 12px;
         background: #f7f7f8;
         color: #18304a;
-        line-height: 1.35;
+        /* line-height: 1.35; */
       }
 
       .detail-actions {
@@ -592,6 +665,8 @@
         flex-direction: column;
         min-height: 0;
         padding: 0;
+        
+        background: #fff;
       }
 
       #detailBody.editing {
@@ -643,7 +718,7 @@
 
       table {
         width: 100%;
-        min-width: 880px;
+        min-width: 1040px;
         border-collapse: collapse;
         text-align: left;
       }
@@ -652,7 +727,7 @@
       td {
         padding: 14px;
         border-bottom: 1px solid var(--line);
-        vertical-align: top;
+        /* vertical-align: top; */
       }
 
       th {
@@ -667,12 +742,15 @@
       tr:last-child td {
         border-bottom: 0;
       }
+      tr:hover td {
+        background-color: #f1f1f18f;
+      }
 
       .empty {
-        border: 1px dashed var(--line);
-        border-radius: 8px;
+        /* background: rgba(255, 255, 255, 0.65);
+        border: 1px solid var(--line);
+        border-radius: 8px; */
         padding: 48px 16px;
-        background: rgba(255, 255, 255, 0.65);
         color: var(--muted);
         text-align: center;
       }
@@ -764,8 +842,8 @@
         max-height: min(740px, calc(100vh - 36px));
         overflow: hidden;
         border-radius: 10px;
-        background: #fff;
         box-shadow: var(--shadow);
+        will-change: transform, opacity;
       }
 
       .dialog.image-viewer-dialog {
@@ -836,7 +914,7 @@
       }
 
       .field label {
-        color: var(--muted);
+        color: var(--text);
         font-size: 14px;
         font-weight: 600;
       }
@@ -876,9 +954,9 @@
         .header-actions {
           margin-left: auto;
         }
-.page {
-    padding: 15px 0 17px;
-}
+        .page {
+          padding: 15px 0 17px;
+        }
         .search-box {
           order: 3;
           flex: 1 1 calc(100% - 50px);
@@ -951,8 +1029,11 @@
         .primary-btn,
         .icon-btn {
           min-height: 35px;
-              padding: 0 10px;
+          padding: 0 10px;
+        }
 
+        .total-btn {
+          width: 35px;
         }
       }
     </style>
@@ -978,6 +1059,14 @@
             <i class="fa-solid fa-sliders" aria-hidden="true"></i>
           </button>
           <div class="header-actions">
+            <button class="primary-btn total-btn" id="totalAmountButton" type="button" title="所有品項總金額" aria-label="所有品項總金額">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 7.5h16v9H4v-9Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+                <path d="M7 7.5V5h10v2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M7 13.25h.01M17 10.75h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                <circle cx="12" cy="12" r="2.25" stroke="currentColor" stroke-width="1.7" />
+              </svg>
+            </button>
             <button class="primary-btn" id="addButton" type="button" onclick="window.openItemModal()">
               ＋
               <span>新增品項</span>
@@ -1035,17 +1124,29 @@
                 <select id="categoryInput"></select>
               </div>
               <div class="field">
-                <label for="priceInput">價格</label>
-                <input id="priceInput" type="number" min="0" inputmode="numeric" />
-              </div>
-              <div class="field">
-                <label for="ratingInput">評價星數</label>
-                <input id="ratingInput" type="number" min="0" max="5" step="1" inputmode="numeric" placeholder="0-5" />
+                <label for="soldInput">狀態</label>
+                <select id="soldInput">
+                  <option value="庫存中">庫存中</option>
+                  <option value="已賣出">已賣出</option>
+                </select>
               </div>
               <div class="field">
                 <label for="quantityInput">數量</label>
                 <input id="quantityInput" type="number" min="1" inputmode="numeric" />
               </div>
+              <div class="field">
+                <label for="priceInput">價格</label>
+                <input id="priceInput" type="text" min="0" inputmode="numeric" />
+              </div>
+              <div class="field conditional-hidden" id="saleAmountField" hidden>
+                <label for="saleAmountInput">賣出金額</label>
+                <input id="saleAmountInput" type="text" min="0" inputmode="numeric" />
+              </div>
+              <div class="field">
+                <label for="ratingInput">評價星數</label>
+                <input id="ratingInput" type="number" min="0" max="5" step="1" inputmode="numeric" placeholder="0-5" />
+              </div>
+
               <div class="field">
                 <label for="platformInput">購買平台</label>
                 <input id="platformInput" />
@@ -1120,6 +1221,18 @@
       </div>
     </div>
 
+    <div class="modal" id="totalAmountModal" role="dialog" aria-modal="true" aria-labelledby="totalAmountTitle">
+      <div class="dialog">
+        <div class="dialog-head">
+          <h2 id="totalAmountTitle">所有品項總價</h2>
+          <button class="close-btn" id="totalAmountCloseButton" type="button" aria-label="關閉">×</button>
+        </div>
+        <div class="detail-body">
+          <div class="total-amount-display" id="totalAmountValue">$0</div>
+        </div>
+      </div>
+    </div>
+
     <div class="modal" id="categoryUnsavedModal" role="dialog" aria-modal="true" aria-labelledby="categoryUnsavedTitle">
       <div class="dialog">
         <div class="dialog-head">
@@ -1150,6 +1263,7 @@
       </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script>
       // 填入 Apps Script 部署後取得的 Web App URL。空字串時會用瀏覽器 localStorage。
       const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwz0g52Ts3ZUzGbkGSZneunCo1gvUdcUSPF3xSrpPI0VF6yqjXfAQXRrOADd66phfM/exec";
@@ -1243,6 +1357,10 @@
         gridButton: document.querySelector("#gridButton"),
         listButton: document.querySelector("#listButton"),
         addButton: document.querySelector("#addButton"),
+        totalAmountButton: document.querySelector("#totalAmountButton"),
+        totalAmountModal: document.querySelector("#totalAmountModal"),
+        totalAmountCloseButton: document.querySelector("#totalAmountCloseButton"),
+        totalAmountValue: document.querySelector("#totalAmountValue"),
         modal: document.querySelector("#itemModal"),
         modalTitle: document.querySelector("#modalTitle"),
         closeButton: document.querySelector("#closeButton"),
@@ -1255,6 +1373,9 @@
         priceInput: document.querySelector("#priceInput"),
         ratingInput: document.querySelector("#ratingInput"),
         quantityInput: document.querySelector("#quantityInput"),
+        soldInput: document.querySelector("#soldInput"),
+        saleAmountField: document.querySelector("#saleAmountField"),
+        saleAmountInput: document.querySelector("#saleAmountInput"),
         platformInput: document.querySelector("#platformInput"),
         noteInput: document.querySelector("#noteInput"),
         imageInput: document.querySelector("#imageInput"),
@@ -1447,6 +1568,35 @@
         return Number(value || 0).toLocaleString("zh-TW");
       }
 
+      function itemSubtotal(item) {
+        return (Number(item.price) || 0) * (Number(item.quantity) || 1);
+      }
+
+      function itemSaleAmount(item) {
+        return isSold(item) ? Math.max(0, Number(item.saleAmount) || 0) : 0;
+      }
+
+      function itemFinalTotal(item) {
+        return Math.max(0, itemSubtotal(item) - itemSaleAmount(item));
+      }
+
+      function isSold(item) {
+        return item?.sold === true || String(item?.sold || "").trim() === "已賣出";
+      }
+
+      function totalInventoryAmount() {
+        return state.items.reduce((total, item) => total + itemFinalTotal(item), 0);
+      }
+
+      function toggleSaleAmountField(statusSelect, field, input) {
+        if (!statusSelect || !field || !input) return;
+        const shouldShow = statusSelect.value === "已賣出";
+        field.classList.toggle("conditional-hidden", !shouldShow);
+        field.hidden = !shouldShow;
+        input.disabled = !shouldShow;
+        if (!shouldShow) input.value = "";
+      }
+
       function normalizeRating(value) {
         if (value === "" || value === null || value === undefined) return 0;
         return Math.min(5, Math.max(0, Math.round(Number(value) || 0)));
@@ -1540,21 +1690,38 @@
                   </select>
                 </div>
                 <div class="field">
-                  <label for="detailPriceInput">價格</label>
-                  <input id="detailPriceInput" type="number" min="0" inputmode="numeric" value="${escapeHtml(item.price || 0)}" />
-                </div>
-                <div class="field">
-                  <label for="detailRatingInput">評價星數</label>
-                  <input id="detailRatingInput" type="number" min="0" max="5" step="1" inputmode="numeric" placeholder="0-5" value="${escapeHtml(normalizeRating(item.rating) || "")}" />
+                  <label for="detailSoldInput">狀態</label>
+                  <select id="detailSoldInput">
+                    <option value="庫存中" ${isSold(item) ? "" : "selected"}>庫存中</option>
+                    <option value="已賣出" ${isSold(item) ? "selected" : ""}>已賣出</option>
+                  </select>
                 </div>
                 <div class="field">
                   <label for="detailQuantityInput">數量</label>
                   <input id="detailQuantityInput" type="number" min="1" inputmode="numeric" value="${escapeHtml(item.quantity || 1)}" />
                 </div>
+                
                 <div class="field">
+                  <label for="detailPriceInput">單價</label>
+                  <input id="detailPriceInput" type="text" min="0" inputmode="numeric" value="${escapeHtml(item.price || 0)}" />
+                </div>
+                  <div class="field ${isSold(item) ? "" : "conditional-hidden"}" id="detailSaleAmountField" ${isSold(item) ? "" : "hidden"}>
+                  <label for="detailSaleAmountInput">賣出金額</label>
+                  <input id="detailSaleAmountInput" type="text" min="0" inputmode="numeric" value="${escapeHtml(itemSaleAmount(item) || "")}" />
+                </div>   
+                
+                <div class="field">
+                  <label for="detailRatingInput">評價星數</label>
+                  <input id="detailRatingInput" type="number" min="0" max="5" step="1" inputmode="numeric" placeholder="0-5" value="${escapeHtml(normalizeRating(item.rating) || "")}" />
+                </div>
+               
+                <div class="field"> 
                   <label for="detailPlatformInput">購買平台</label>
                   <input id="detailPlatformInput" value="${escapeHtml(item.platform || "")}" />
                 </div>
+             
+              
+                
                 <div class="field full">
                   <label for="detailNoteInput">備註</label>
                   <textarea id="detailNoteInput">${escapeHtml(item.note || "")}</textarea>
@@ -1632,9 +1799,12 @@
         els.gridView.innerHTML = items
           .map(
             (item) => `
-              <article class="card" data-action="detail" data-id="${escapeHtml(item.id)}" tabindex="0">
+              <article class="card ${isSold(item) ? "sold-card" : ""}" data-action="detail" data-id="${escapeHtml(item.id)}" tabindex="0">
                 <div class="card-body">
-                  <p class="brand">${escapeHtml(item.brand || "未填品牌")}</p>
+                  <div class="card-top">
+                    <p class="brand">${escapeHtml(item.brand || "未填品牌")}</p>
+                    ${isSold(item) ? `<span class="sold-status">已賣出</span>` : ""}
+                  </div>
                   <h3 class="name">${escapeHtml(item.name)}</h3>
                   <span class="tag">${escapeHtml(item.category)}</span>
                   ${
@@ -1662,7 +1832,6 @@
           )
           .join("");
       }
-
       function renderTable(items) {
         els.listView.innerHTML = `
           <table>
@@ -1670,8 +1839,10 @@
               <tr>
                 <th>品項</th>
                 <th style="width: 130px;">分類</th>
-                <th>價格</th>
+                <th style="width: 80px;">狀態</th>
+                <th>單價</th>
                 <th style="width: 55px;">數量</th>
+                <th>總價</th>
                 <th>購買平台</th>
                 <th>備註</th>
               </tr>
@@ -1682,12 +1853,15 @@
                   (item) => `
                     <tr data-action="detail" data-id="${escapeHtml(item.id)}" tabindex="0">
                       <td>
+                        <span class="brand">${escapeHtml(item.brand || "未填品牌")}</span><br />
                         <strong>${escapeHtml(item.name)}</strong><br />
-                        <span class="brand">${escapeHtml(item.brand || "未填品牌")}</span>
+                        ${renderRating(item.rating) || `<span class="rating-empty">未評價</span>`}
                       </td>
                       <td><span class="tag">${escapeHtml(item.category)}</span></td>
-                      <td>$${money(item.price)} ${renderRating(item.rating)}</td>
+                      <td>${isSold(item) ? `<span class="tag sold-tag">已賣出</span>` : "庫存中"}</td>
+                      <td>$${money(item.price)}</td>
                       <td>${escapeHtml(item.quantity || 1)}</td>
+                      <td>$${money(itemFinalTotal(item))}</td>
                       <td>${escapeHtml(platformMerchant(item.platform))}</td>
                       <td>${item.note ? `<span class="note">${escapeHtml(item.note)}</span>` : "未填備註"}</td>
                     </tr>
@@ -1697,6 +1871,48 @@
             </tbody>
           </table>
         `;
+      }
+
+      function animateCards() {
+        if (state.viewMode !== "grid" || !window.gsap) return;
+        const cards = Array.from(els.gridView.querySelectorAll(".card"));
+        if (!cards.length) return;
+
+        gsap.killTweensOf(cards);
+        gsap.fromTo(
+          cards,
+          { autoAlpha: 0, y: 18, scale: 0.98 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.42,
+            ease: "power2.out",
+            stagger: 0.055,
+            clearProps: "transform,opacity,visibility",
+          },
+        );
+      }
+
+      function animateModalOpen(modal) {
+        if (!window.gsap || !modal) return;
+        const dialog = modal.querySelector(".dialog");
+        gsap.killTweensOf([modal, dialog]);
+        gsap.set(modal, { autoAlpha: 0 });
+        if (dialog) gsap.set(dialog, { autoAlpha: 0, y: 12 });
+
+        requestAnimationFrame(() => {
+          gsap.to(modal, { autoAlpha: 1, duration: 0.14, ease: "power1.out" });
+          if (dialog) {
+            gsap.to(dialog, {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.22,
+              ease: "sine.out",
+              clearProps: "transform,opacity,visibility",
+            });
+          }
+        });
       }
 
       function render() {
@@ -1709,12 +1925,17 @@
         els.gridView.classList.toggle("hidden", state.viewMode !== "grid" || items.length === 0);
         els.listView.classList.toggle("hidden", state.viewMode !== "list" || items.length === 0);
         els.emptyState.classList.toggle("hidden", items.length !== 0);
+        const totalAmount = totalInventoryAmount();
+        els.totalAmountValue.textContent = `$${money(totalAmount)}`;
+        els.totalAmountButton.title = `所有品項總價：$${money(totalAmount)}`;
+        els.totalAmountButton.setAttribute("aria-label", `所有品項總價：$${money(totalAmount)}`);
         els.gridButton.classList.toggle("active", state.viewMode === "grid");
         els.listButton.classList.toggle("active", state.viewMode === "list");
         els.submitButton.disabled = state.isSaving;
         els.deleteConfirmButton.disabled = state.isSaving;
         els.savingText.textContent = state.savingMessage;
         els.savingOverlay.classList.toggle("open", state.isSaving);
+        animateCards();
       }
 
       function renderDetail(item) {
@@ -1742,17 +1963,34 @@
                 <div class="detail-value"><span>${escapeHtml(item.category)}</span></div>
               </div>
               <div class="field">
-                <label>價格</label>
-                <div class="detail-value">$${money(item.price)}</div>
-              </div>
-              <div class="field">
-                <label>評價星數</label>
-                <div class="detail-value">${renderRating(item.rating) || "未評價"}</div>
+                <label>狀態</label>
+                <div class="detail-value">${isSold(item) ? `<span class="sold-tag">已賣出</span>` : "庫存中"}</div>
               </div>
               <div class="field">
                 <label>數量</label>
                 <div class="detail-value">${escapeHtml(item.quantity || 1)}</div>
               </div>
+              <div class="field">
+                <label>單價</label>
+                <div class="detail-value">$${money(item.price)}</div>
+              </div>
+              <div class="field">
+                <label>總價</label>
+                <div class="detail-value">$${money(itemFinalTotal(item))}</div>
+              </div>
+              <div class="field">
+                <label>評價星數</label>
+                <div class="detail-value">${renderRating(item.rating) || "未評價"}</div>
+              </div>
+              ${
+                isSold(item)
+                  ? `<div class="field">
+                      <label>賣出金額</label>
+                      <div class="detail-value">$${money(itemSaleAmount(item))}</div>
+                    </div>`
+                  : ""
+              }
+              
               <div class="field">
                 <label>購買平台</label>
                 <div class="detail-value">${escapeHtml(platformMerchant(item.platform))}</div>
@@ -1801,12 +2039,16 @@
         els.priceInput.value = item?.price || "";
         els.ratingInput.value = normalizeRating(item?.rating) || "";
         els.quantityInput.value = item?.quantity || 1;
+        els.soldInput.value = isSold(item) ? "已賣出" : "庫存中";
+        els.saleAmountInput.value = itemSaleAmount(item) || "";
+        toggleSaleAmountField(els.soldInput, els.saleAmountField, els.saleAmountInput);
         els.platformInput.value = item?.platform || "";
         els.noteInput.value = item?.note || "";
         state.editingImages = itemImages(item);
         els.imageInput.value = "";
         renderImagePreview();
         els.modal.classList.add("open");
+        animateModalOpen(els.modal);
         resetDialogScroll(els.modal);
         syncBodyScrollLock();
         els.nameInput.focus();
@@ -1828,6 +2070,7 @@
         state.detailMode = "view";
         renderDetail(item);
         els.detailModal.classList.add("open");
+        animateModalOpen(els.detailModal);
         resetDialogScroll(els.detailModal);
         syncBodyScrollLock();
       }
@@ -1847,6 +2090,7 @@
         setCategorySaveState("未儲存");
         renderCategoryManager();
         els.categoryModal.classList.add("open");
+        animateModalOpen(els.categoryModal);
         resetDialogScroll(els.categoryModal);
         syncBodyScrollLock();
         els.newCategoryInput.focus();
@@ -1874,6 +2118,7 @@
 
       function openCategoryUnsavedModal() {
         els.categoryUnsavedModal.classList.add("open");
+        animateModalOpen(els.categoryUnsavedModal);
         resetDialogScroll(els.categoryUnsavedModal);
         syncBodyScrollLock();
       }
@@ -1897,6 +2142,7 @@
         state.pendingDeleteItemId = item.id;
         els.deleteConfirmMessage.textContent = `確定要刪除「${item.name}」嗎？刪除後會同步移除試算表資料。`;
         els.deleteConfirmModal.classList.add("open");
+        animateModalOpen(els.deleteConfirmModal);
         resetDialogScroll(els.deleteConfirmModal);
         syncBodyScrollLock();
       }
@@ -1907,9 +2153,22 @@
         syncBodyScrollLock();
       }
 
+      function openTotalAmountModal() {
+        els.totalAmountModal.classList.add("open");
+        animateModalOpen(els.totalAmountModal);
+        resetDialogScroll(els.totalAmountModal);
+        syncBodyScrollLock();
+      }
+
+      function closeTotalAmountModal() {
+        els.totalAmountModal.classList.remove("open");
+        syncBodyScrollLock();
+      }
+
       function openImageViewer(src) {
         els.imageViewerImg.src = src;
         els.imageViewerModal.classList.add("open");
+        animateModalOpen(els.imageViewerModal);
         resetDialogScroll(els.imageViewerModal);
         syncBodyScrollLock();
       }
@@ -2108,6 +2367,8 @@
           price: Number(els.priceInput.value) || 0,
           rating: normalizeRating(els.ratingInput.value),
           quantity: Number(els.quantityInput.value) || 1,
+          sold: els.soldInput.value,
+          saleAmount: els.soldInput.value === "已賣出" ? Number(els.saleAmountInput.value) || 0 : 0,
           platform: els.platformInput.value.trim(),
           note: els.noteInput.value.trim(),
           images: state.editingImages,
@@ -2140,6 +2401,9 @@
           price: Number(document.querySelector("#detailPriceInput").value) || 0,
           rating: normalizeRating(document.querySelector("#detailRatingInput").value),
           quantity: Number(document.querySelector("#detailQuantityInput").value) || 1,
+          sold: document.querySelector("#detailSoldInput").value,
+          saleAmount:
+            document.querySelector("#detailSoldInput").value === "已賣出" ? Number(document.querySelector("#detailSaleAmountInput").value) || 0 : 0,
           platform: document.querySelector("#detailPlatformInput").value.trim(),
           note: document.querySelector("#detailNoteInput").value.trim(),
           images: state.editingImages,
@@ -2262,6 +2526,7 @@
       });
 
       els.addButton.addEventListener("click", () => openModal());
+      els.totalAmountButton.addEventListener("click", openTotalAmountModal);
       els.categoryManageButton.addEventListener("click", openCategoryModal);
       els.closeButton.addEventListener("click", closeModal);
       els.categoryCloseButton.addEventListener("click", requestCloseCategoryModal);
@@ -2272,6 +2537,7 @@
       els.deleteCancelXButton.addEventListener("click", closeDeleteConfirm);
       els.deleteCancelButton.addEventListener("click", closeDeleteConfirm);
       els.deleteConfirmButton.addEventListener("click", confirmDeleteSelectedItem);
+      els.totalAmountCloseButton.addEventListener("click", closeTotalAmountModal);
       els.addCategoryButton.addEventListener("click", addCategory);
       els.newCategoryInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") addCategory();
@@ -2285,6 +2551,9 @@
         setCategorySaveState("未儲存");
       });
       els.form.addEventListener("submit", handleSave);
+      els.soldInput.addEventListener("change", () => {
+        toggleSaleAmountField(els.soldInput, els.saleAmountField, els.saleAmountInput);
+      });
       els.imageInput.addEventListener("change", async (event) => {
         const files = Array.from(event.target.files || []);
         if (!files.length) return;
@@ -2321,6 +2590,11 @@
       els.detailBody.addEventListener("click", handleDetailAction);
       els.detailBody.addEventListener("submit", handleDetailSave);
       els.detailBody.addEventListener("change", async (event) => {
+        if (event.target.id === "detailSoldInput") {
+          toggleSaleAmountField(event.target, document.querySelector("#detailSaleAmountField"), document.querySelector("#detailSaleAmountInput"));
+          return;
+        }
+
         if (event.target.id !== "detailImageInput") return;
         const files = Array.from(event.target.files || []);
         if (!files.length) return;
@@ -2370,6 +2644,9 @@
       els.deleteConfirmModal.addEventListener("click", (event) => {
         if (event.target === els.deleteConfirmModal) closeDeleteConfirm();
       });
+      els.totalAmountModal.addEventListener("click", (event) => {
+        if (event.target === els.totalAmountModal) closeTotalAmountModal();
+      });
       els.categoryUnsavedModal.addEventListener("click", (event) => {
         if (event.target === els.categoryUnsavedModal) closeCategoryUnsavedModal();
       });
@@ -2382,6 +2659,7 @@
           closeDetail();
           requestCloseCategoryModal();
           closeDeleteConfirm();
+          closeTotalAmountModal();
           closeCategoryUnsavedModal();
           closeImageViewer();
         }

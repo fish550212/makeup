@@ -1,9 +1,9 @@
 // 貼到「綁定這份試算表」的 Apps Script。
 // 這版會使用第一個工作表，並支援你現有的欄位：
-// 分類、品名色號、單價、評價、量、總、購買平台、備註
+// 分類、品名色號、單價、評價、量、狀態、賣出金額、總、購買平台、備註
 
 const SHEET_NAME = ""; // 留空代表使用第一個工作表；若要指定工作表名稱可填在這裡。
-const REQUIRED_HEADERS = ["分類", "品名色號", "單價", "評價", "量", "總", "購買平台", "備註"];
+const REQUIRED_HEADERS = ["分類", "品名色號", "單價", "評價", "量", "狀態", "賣出金額", "總", "購買平台", "備註"];
 const SYSTEM_HEADERS = ["id", "brand", "images", "createdAt", "updatedAt"];
 
 function doGet(e) {
@@ -117,6 +117,8 @@ function rowToItem(row, headerMap) {
     price: parseMoney(cell(row, headerMap, "單價")),
     rating: normalizeRating(cell(row, headerMap, "評價")),
     quantity: Number(cell(row, headerMap, "量")) || 1,
+    sold: parseSold(cell(row, headerMap, "狀態")),
+    saleAmount: parseMoney(cell(row, headerMap, "賣出金額")),
     platform: cell(row, headerMap, "購買平台"),
     note: cell(row, headerMap, "備註"),
     images: parseImages(cell(row, headerMap, "images")),
@@ -138,6 +140,10 @@ function parseMoney(value) {
 function normalizeRating(value) {
   if (value === "" || value === null || value === undefined) return 0;
   return Math.min(5, Math.max(0, Math.round(Number(value) || 0)));
+}
+
+function parseSold(value) {
+  return value === true || String(value || "").trim() === "已賣出";
 }
 
 function parseImages(value) {
@@ -195,13 +201,18 @@ function writeItem(sheet, rowNumber, item, previous) {
   const price = Number(item.price) || 0;
   const rating = normalizeRating(item.rating);
   const quantity = Number(item.quantity) || 1;
+  const sold = parseSold(item.sold);
+  const saleAmount = sold ? Number(item.saleAmount) || 0 : 0;
+  const total = Math.max(0, price * quantity - saleAmount);
 
   setByHeader(sheet, rowNumber, headerMap, "分類", item.category || "");
   setByHeader(sheet, rowNumber, headerMap, "品名色號", item.name || "");
   setByHeader(sheet, rowNumber, headerMap, "單價", price);
   setByHeader(sheet, rowNumber, headerMap, "評價", rating || "");
   setByHeader(sheet, rowNumber, headerMap, "量", quantity);
-  setByHeader(sheet, rowNumber, headerMap, "總", price * quantity);
+  setByHeader(sheet, rowNumber, headerMap, "狀態", sold ? "已賣出" : "庫存中");
+  setByHeader(sheet, rowNumber, headerMap, "賣出金額", saleAmount || "");
+  setByHeader(sheet, rowNumber, headerMap, "總", total);
   setByHeader(sheet, rowNumber, headerMap, "購買平台", item.platform || "");
   setByHeader(sheet, rowNumber, headerMap, "備註", item.note || "");
   setByHeader(sheet, rowNumber, headerMap, "id", item.id);
