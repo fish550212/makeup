@@ -138,7 +138,7 @@
       }
 
       .primary-btn {
-        padding: 0 10px;
+        padding: 0 20px;
         background: var(--primary);
         color: #fff;
         font-weight: 700;
@@ -263,7 +263,7 @@
       }
 
       .page {
-        padding: 20px 0 44px;
+        padding: 15px 0 20px;
       }
 
       .status {
@@ -282,7 +282,7 @@
         justify-content: space-between;
         align-items: center;
         gap: 12px;
-        margin-bottom: 18px;
+        margin-bottom: 15px;
       }
 
       .count-pill {
@@ -324,7 +324,7 @@
       .card-body {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
         flex: 1;
         padding: 16px;
       }
@@ -571,7 +571,7 @@
         flex: 0 0 auto;
         gap: 8px;
         justify-content: center;
-        padding: 12px 20px;
+        padding: 15px 20px;
         background: rgba(255, 255, 255, 0.96);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
@@ -629,15 +629,21 @@
       }
 
       .table-wrap {
-        overflow-x: auto;
+        max-height: calc(100vh - 233px);
+        overflow: auto;
         border: 1px solid var(--line);
         border-radius: 8px;
         background: #fff;
       }
 
+      .table-wrap .note {
+        padding: 0;
+        background-color: #fff;
+      }
+
       table {
         width: 100%;
-        min-width: 780px;
+        min-width: 880px;
         border-collapse: collapse;
         text-align: left;
       }
@@ -650,6 +656,9 @@
       }
 
       th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
         background: #fff3f7;
         color: var(--primary-dark);
         font-size: 13px;
@@ -867,7 +876,9 @@
         .header-actions {
           margin-left: auto;
         }
-
+.page {
+    padding: 15px 0 17px;
+}
         .search-box {
           order: 3;
           flex: 1 1 calc(100% - 50px);
@@ -925,6 +936,10 @@
           flex-wrap: wrap;
         }
 
+        .table-wrap {
+          max-height: calc(100vh - 200px);
+        }
+
         .image-viewer-close {
           position: absolute;
           top: 50%;
@@ -936,6 +951,8 @@
         .primary-btn,
         .icon-btn {
           min-height: 35px;
+              padding: 0 10px;
+
         }
       }
     </style>
@@ -977,9 +994,9 @@
     </header>
 
     <main class="page">
-      <p class="status" id="syncStatus"></p>
       <div class="toolbar">
         <div class="count-pill" id="resultCount">全部，共 0 件</div>
+        <p class="status" id="syncStatus"></p>
         <div class="view-switch" aria-label="顯示模式">
           <button class="icon-btn active" id="gridButton" type="button" title="卡片檢視">▦</button>
           <button class="icon-btn" id="listButton" type="button" title="表格檢視">☰</button>
@@ -1054,7 +1071,7 @@
     <div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
       <div class="dialog">
         <div class="dialog-head">
-          <h2>品項內容</h2>
+          <h2 id="detailModalTitle">品項內容</h2>
           <button class="close-btn" id="detailCloseButton" type="button" aria-label="關閉">×</button>
         </div>
         <div class="detail-body" id="detailBody"></div>
@@ -1243,6 +1260,7 @@
         imageInput: document.querySelector("#imageInput"),
         imagePreview: document.querySelector("#imagePreview"),
         detailModal: document.querySelector("#detailModal"),
+        detailModalTitle: document.querySelector("#detailModalTitle"),
         detailCloseButton: document.querySelector("#detailCloseButton"),
         detailBody: document.querySelector("#detailBody"),
         categoryModal: document.querySelector("#categoryModal"),
@@ -1378,11 +1396,11 @@
           return;
         }
 
-        setStatus("正在讀取 Google 試算表...");
+        setStatus("讀取中");
         try {
           const data = await sheetJsonp("list");
           state.items = Array.isArray(data.items) ? data.items : [];
-          setStatus("已連線 Google 試算表。");
+          setStatus("已連線");
         } catch (error) {
           state.items = loadLocalItems();
           setStatus(`${error.message}，暫時改用本機資料。`, true);
@@ -1493,6 +1511,7 @@
       }
 
       function renderInlineEditForm(item) {
+        els.detailModalTitle.textContent = "品項內容-編輯";
         fillCategoryOptions();
         state.editingImages = itemImages(item);
         els.detailBody.classList.add("editing");
@@ -1650,10 +1669,11 @@
             <thead>
               <tr>
                 <th>品項</th>
-                <th>分類</th>
+                <th style="width: 130px;">分類</th>
                 <th>價格</th>
-                <th>數量</th>
-                <th>平台 / 備註</th>
+                <th style="width: 55px;">數量</th>
+                <th>購買平台</th>
+                <th>備註</th>
               </tr>
             </thead>
             <tbody>
@@ -1668,7 +1688,8 @@
                       <td><span class="tag">${escapeHtml(item.category)}</span></td>
                       <td>$${money(item.price)} ${renderRating(item.rating)}</td>
                       <td>${escapeHtml(item.quantity || 1)}</td>
-                      <td>${escapeHtml(platformMerchant(item.platform))}${item.note ? `<br /><span class="note">${escapeHtml(item.note)}</span>` : ""}</td>
+                      <td>${escapeHtml(platformMerchant(item.platform))}</td>
+                      <td>${item.note ? `<span class="note">${escapeHtml(item.note)}</span>` : "未填備註"}</td>
                     </tr>
                   `,
                 )
@@ -1703,6 +1724,7 @@
         }
 
         els.detailBody.classList.remove("editing");
+        els.detailModalTitle.textContent = "品項內容";
         const images = itemImages(item);
         els.detailBody.innerHTML = `
           <div class="form-scroll">
