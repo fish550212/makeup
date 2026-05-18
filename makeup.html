@@ -1,88 +1,88 @@
 <!doctype html>
 <html lang="zh-Hant">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>彩妝庫存管理</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>彩妝庫存管理</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-    :root {
-      --bg: #f7eded8f;
-      --panel: #ffffff;
-      --text: #263241;
-      --muted: #718096;
-      --line: #f2d8e2;
-      --soft: #fff0f5;
-      --primary: #df5d86;
-      --primary-dark: #c83f6f;
-      --danger: #d64545;
-      --shadow: 0 16px 40px rgba(116, 39, 70, 0.12);
-      --btn-gray: #e7e7e7;
-      --col-gray: #626262;
-      --col-d-pink: #f5d6de;
-    }
+      :root {
+        --bg: #f7eded8f;
+        --panel: #ffffff;
+        --text: #263241;
+        --muted: #718096;
+        --line: #f2d8e2;
+        --soft: #fff0f5;
+        --primary: #df5d86;
+        --primary-dark: #c83f6f;
+        --danger: #d64545;
+        --shadow: 0 16px 40px rgba(116, 39, 70, 0.12);
+        --btn-gray: #e7e7e7;
+        --col-gray: #626262;
+        --col-d-pink: #f5d6de;
+      }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: "Noto Sans TC", Arial, "Microsoft JhengHei", "PingFang TC", sans-serif;
-    }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Noto Sans TC", Arial, "Microsoft JhengHei", "PingFang TC", sans-serif;
+      }
 
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-    }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
 
-    button {
-      border: 0;
-      cursor: pointer;
-    }
+      button {
+        border: 0;
+        cursor: pointer;
+      }
 
-    .app-header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      border-bottom: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(16px);
-    }
+      .app-header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(16px);
+      }
 
-    .header-inner,
-    .page {
-      width: min(1180px, calc(100% - 32px));
-      margin: 0 auto;
-    }
+      .header-inner,
+      .page {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
 
-    .header-main {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      align-items: center;
-      padding: 18px 0 12px;
-    }
+      .header-main {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+        padding: 18px 0 12px;
+      }
 
-    .title {
-      margin: 0;
-      color: var(--primary-dark);
-      font-size: 24px;
-      line-height: 1.2;
-      white-space: nowrap;
-    }
+      .title {
+        margin: 0;
+        color: var(--primary-dark);
+        font-size: 24px;
+        line-height: 1.2;
+        white-space: nowrap;
+      }
 
-    .header-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      justify-content: flex-end;
-    }
+      .header-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: flex-end;
+      }
 
       .header-actions .status {
         max-width: 190px;
@@ -91,1297 +91,1384 @@
         white-space: nowrap;
       }
 
-    .search-box {
-      flex: 1 1 260px;
-      position: relative;
-      margin-left: auto;
-    }
-
-    .search-box input,
-    .field input,
-    .field select,
-    .field textarea {
-      width: 100%;
-      border: 1px solid #e4e1e6;
-      border-radius: 8px;
-      color: var(--text);
-      outline: 0;
-    }
-
-    .search-box input {
-      padding: 8px 14px 8px 38px;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 13px;
-      top: 50%;
-      color: var(--primary);
-      transform: translateY(-50%);
-    }
-
-    .primary-btn,
-    .icon-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 40px;
-      border-radius: 8px;
-      transition:
-        background 0.15s ease,
-        color 0.15s ease;
-    }
-
-    .primary-btn {
-      padding: 0 16px;
-      background: var(--primary);
-      color: #fff;
-      font-weight: 700;
-    }
-
-    .primary-btn:hover {
-      background: var(--primary-dark);
-    }
-
-    .back-btn {
-      background: var(--btn-gray);
-      color: var(--col-gray);
-    }
-
-    .back-btn:hover {
-      background-color: var(--col-d-pink);
-      color: var(--primary-dark);
-    }
-
-    .primary-btn:disabled {
-      cursor: wait;
-      opacity: 0.7;
-    }
-
-    .icon-btn {
-      width: 40px;
-      background: #fff;
-      color: var(--muted);
-    }
-
-    .icon-btn:hover,
-    .icon-btn.active {
-      background: var(--soft);
-      color: var(--primary-dark);
-    }
-
-    .danger-btn {
-      background-color: var(--btn-gray);
-      color: var(--danger);
-    }
-
-    .danger-btn:hover {
-      background-color: var(--col-d-pink);
-    }
-
-    .category-bar {
-      display: flex;
-      flex: 1 1 auto;
-      gap: 8px;
-      min-width: 0;
-      overflow-x: auto;
-      padding: 0;
-    }
-
-    .category-nav-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      padding: 0 0 14px;
-    }
-
-    .category-btn {
-      flex: 0 0 auto;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      padding: 8px 14px;
-      background: #fff;
-      color: var(--text);
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .category-btn.active {
-      border-color: var(--primary);
-      background: var(--primary);
-      color: #fff;
-    }
-
-    .category-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto auto;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .category-row+.category-row {
-      margin-top: 8px;
-    }
-
-    .category-row input {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 10px 12px;
-      outline: 0;
-    }
-
-    .category-list {
-      display: grid;
-      gap: 8px;
-      padding: 20px;
-      overflow: auto;
-    }
-
-    .category-add {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 8px;
-      padding: 10px 20px 20px;
-    }
-
-    .category-add input {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 10px 12px;
-      outline: 0;
-    }
-
-    .pagination {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      justify-content: center;
-      margin-top: 22px;
-    }
-
-    .pagination.hidden {
-      display: none;
-    }
-
-    .page-btn {
-      min-width: 40px;
-      min-height: 40px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 0 12px;
-      background: #fff;
-      color: var(--text);
-      font-weight: 700;
-    }
-
-    .page-btn:hover,
-    .page-btn.active {
-      border-color: var(--primary);
-      background: var(--primary);
-      color: #fff;
-    }
-
-    .page-btn:disabled {
-      cursor: not-allowed;
-      opacity: 0.45;
-    }
-
-    .page-btn:disabled:hover {
-      border-color: var(--line);
-      background: #fff;
-      color: var(--text);
-    }
-
-    .page-ellipsis {
-      display: inline-flex;
-      align-items: center;
-      min-height: 40px;
-      color: var(--muted);
-      font-weight: 700;
-    }
-
-    .page {
-      padding: 20px 0 44px;
-    }
-
-    .status {
-      margin: 0 0 0px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .status.error {
-      color: var(--danger);
-      padding: 10px 20px;
-    }
-
-    .toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .count-pill {
-      border-radius: 999px;
-      padding: 8px 12px;
-      background: #fff;
-      color: var(--primary-dark);
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .view-switch {
-      display: flex;
-      gap: 6px;
-      padding: 4px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: #fff;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 16px;
-    }
-
-    .card {
-      display: flex;
-      flex-direction: column;
-      min-height: 270px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: var(--panel);
-      box-shadow: 0 8px 24px rgba(116, 39, 70, 0.06);
-      overflow: hidden;
-      cursor: pointer;
-    }
-
-    .card-body {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      flex: 1;
-      padding: 16px;
-    }
-
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .tag {
-      width: fit-content;
-      align-self: flex-start;
-      border-radius: 999px;
-      padding: 5px 9px;
-      background: var(--soft);
-      color: var(--primary-dark);
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .actions {
-      display: flex;
-      gap: 4px;
-    }
-
-    .brand {
-      margin: 0 0 6px;
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .name {
-      margin: 0;
-      min-height: 48px;
-      font-size: 17px;
-      line-height: 1.45;
-    }
-
-    .price {
-      margin-top: 16px;
-      color: var(--text);
-      font-size: 28px;
-      font-weight: 800;
-    }
-
-    .meta {
-      display: grid;
-      gap: 8px;
-      border-top: 1px solid var(--line);
-      padding: 14px 16px;
-      color: var(--text);
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .meta-pair {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .meta-chip {
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .meta-shop {
-      background-color: #f1f1f1;
-      border-radius: 30px;
-      padding: 5px 10px;
-      color: #878787;
-    }
-
-    .thumb-strip,
-    .image-preview,
-    .detail-images {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .image-preview {
-      gap: 15px;
-      padding: 15px 0;
-    }
-
-    .preview-item {
-      position: relative;
-      width: calc(100% / 3 - 10px);
-    }
-
-    .image-remove-btn {
-      position: absolute;
-      top: -7px;
-      right: -7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      border: 1px solid #fff;
-      border-radius: 50%;
-      background: var(--danger);
-      color: #fff;
-      font-size: 10px;
-
-      line-height: 1;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
-    }
-
-    .thumb,
-    .preview-img,
-    .detail-img {
-      width: calc(100% / 3 - 6px);
-      height: 92px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      object-fit: cover;
-      background: #fff3f7;
-    }
-
-    .preview-img {
-      width: 100%;
-      height: 152px;
-    }
-
-    .detail-img {
-      width: calc(100% / 3 - 6px);
-      height: 132px;
-    }
-
-    .image-viewer-img {
-      display: block;
-      max-width: min(920px, calc(100vw - 104px));
-      max-height: calc(100vh - 96px);
-      border-radius: 10px;
-      object-fit: contain;
-      background: #fff;
-      box-shadow: var(--shadow);
-    }
-
-    .detail-body {
-      display: grid;
-      flex: 1 1 auto;
-      gap: 16px;
-      min-height: 0;
-      padding: 20px;
-      overflow: auto;
-    }
-
-    .detail-title {
-      display: grid;
-      gap: 8px;
-    }
-
-    .detail-title h3 {
-      margin: 0;
-      font-size: 22px;
-      line-height: 1.35;
-    }
-
-    .detail-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .detail-cell {
-      display: grid;
-      gap: 8px;
-    }
-
-    .detail-cell span {
-      display: block;
-      color: #6f607a;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .detail-value {
-      min-height: 36px;
-      border: 1px solid #e4e1e6;
-      border-radius: 8px;
-      padding: 8px 12px;
-      background: #f7f7f8;
-      color: #18304a;
-      line-height: 1.35;
-    }
-
-    .detail-actions {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-    }
-
-    #detailBody>.detail-actions {
-      position: sticky;
-      bottom: -20px;
-      z-index: 2;
-      margin: 4px -20px -20px;
-      padding: 12px 20px;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    .form-actions {
-      display: flex;
-      flex: 0 0 auto;
-      gap: 8px;
-      justify-content: center;
-      padding: 12px 20px;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    .form-scroll {
-      display: grid;
-      gap: 14px;
-      min-height: 0;
-      overflow: auto;
-      padding: 20px;
-    }
-
-    #itemForm,
-    #detailEditForm {
-      display: flex;
-      flex: 1 1 auto;
-      flex-direction: column;
-      min-height: 0;
-      padding: 0;
-    }
-
-    #detailBody.editing {
-      padding: 0;
-      overflow: hidden;
-    }
-
-    #detailBody.editing #detailEditForm {
-      height: 100%;
-    }
-
-    #detailEditForm>.detail-actions {
-      flex: 0 0 auto;
-      z-index: 2;
-    }
-
-    .inline-form {
-      padding: 0;
-    }
-
-    .note {
-      border-radius: 8px;
-      padding: 8px;
-      background: #fff;
-      color: var(--text);
-      font-weight: 400;
-      line-height: 1.45;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-    }
-
-    table {
-      width: 100%;
-      min-width: 780px;
-      border-collapse: collapse;
-      text-align: left;
-    }
-
-    th,
-    td {
-      padding: 14px;
-      border-bottom: 1px solid var(--line);
-      vertical-align: top;
-    }
-
-    th {
-      background: #fff3f7;
-      color: var(--primary-dark);
-      font-size: 13px;
-    }
-
-    tr:last-child td {
-      border-bottom: 0;
-    }
-
-    .empty {
-      border: 1px dashed var(--line);
-      border-radius: 8px;
-      padding: 48px 16px;
-      background: rgba(255, 255, 255, 0.65);
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      z-index: 30;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      background: rgba(38, 50, 65, 0.58);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-
-    .modal.open {
-      display: flex;
-    }
-
-    .saving-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 40;
-      display: none;
-      place-items: center;
-      background: rgba(255, 248, 251, 0.78);
-      backdrop-filter: blur(8px);
-    }
-
-    .saving-overlay.open {
-      display: grid;
-    }
-
-    .saving-box {
-      display: grid;
-      gap: 12px;
-      place-items: center;
-      min-width: 180px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 22px 26px;
-      background: #fff;
-      box-shadow: var(--shadow);
-      color: var(--primary-dark);
-      font-weight: 800;
-    }
-
-    .saving-spinner {
-      width: 38px;
-      height: 38px;
-      border: 4px solid #f8dce7;
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: savingSpin 0.8s linear infinite;
-    }
-
-    @keyframes savingSpin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .dialog {
-      display: flex;
-      flex-direction: column;
-      width: min(520px, 100%);
-      max-height: min(740px, calc(100vh - 36px));
-      overflow: hidden;
-      border-radius: 10px;
-      background: #fff;
-      box-shadow: var(--shadow);
-    }
-
-    .dialog.image-viewer-dialog {
-      position: relative;
-      width: auto;
-      max-height: none;
-      overflow: visible;
-      background: transparent;
-      box-shadow: none;
-    }
-
-    .image-viewer-dialog .image-viewer-close {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      z-index: 2;
-      background: #5050507d;
-      box-shadow: 0 10px 24px rgba(38, 50, 65, 0.22);
-    }
-
-    .dialog-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 15px;
-      background: var(--primary);
-      color: #fff;
-      flex: 0 0 auto;
-    }
-
-    .dialog-head h2 {
-      margin: 0;
-      font-size: 16px;
-    }
-
-    .dialog-head-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .close-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.18);
-      color: #fff;
-      font-size: 24px;
-      line-height: 1;
-    }
-
-    form {
-      display: grid;
-      gap: 14px;
-      padding: 20px;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .field {
-      display: grid;
-      gap: 6px;
-    }
-
-    .field label {
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .field input,
-    .field select,
-    .field textarea {
-      padding: 8px 12px;
-    }
-
-    .field textarea {
-      min-height: 92px;
-      resize: vertical;
-    }
-
-    .file-input {
-      border: 1px dashed var(--line);
-      border-radius: 8px;
-      padding: 14px;
-      background: #fffafd;
-    }
-
-    .full {
-      grid-column: 1 / -1;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    @media (max-width: 720px) {
-      .header-main {
-        gap: 10px;
-      }
-
-      .header-actions {
+      .search-box {
+        flex: 1 1 260px;
+        position: relative;
         margin-left: auto;
       }
 
-      .search-box {
-        order: 3;
-        flex-basis: 100%;
-        margin-left: 0;
-      }
-
-      .title {
-        flex: 1 1 auto;
-        min-width: 0;
-      }
-
-      .primary-btn span {
+      .filter-toggle-btn {
         display: none;
+      }
+
+      .search-box input,
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        border: 1px solid #e4e1e6;
+        border-radius: 8px;
+        color: var(--text);
+        outline: 0;
+      }
+
+      .search-box input {
+        padding: 8px 14px 8px 38px;
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 13px;
+        top: 50%;
+        color: var(--primary);
+        transform: translateY(-50%);
+      }
+
+      .primary-btn,
+      .icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 40px;
+        border-radius: 8px;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .primary-btn {
+        padding: 0 10px;
+        background: var(--primary);
+        color: #fff;
+        font-weight: 700;
+      }
+
+      .primary-btn:hover {
+        background: var(--primary-dark);
+      }
+
+      .back-btn {
+        background: var(--btn-gray);
+        color: var(--col-gray);
+      }
+
+      .back-btn:hover {
+        background-color: var(--col-d-pink);
+        color: var(--primary-dark);
+      }
+
+      .primary-btn:disabled {
+        cursor: wait;
+        opacity: 0.7;
+      }
+
+      .icon-btn {
+        width: 40px;
+        background: #fff;
+        color: var(--muted);
+      }
+
+      .icon-btn.filter-toggle-btn {
+        display: none;
+      }
+
+      .icon-btn:hover,
+      .icon-btn.active {
+        background: var(--soft);
+        color: var(--primary-dark);
+      }
+
+      .danger-btn {
+        background-color: var(--btn-gray);
+        color: var(--danger);
+      }
+
+      .danger-btn:hover {
+        background-color: var(--col-d-pink);
+      }
+
+      .category-bar {
+        display: flex;
+        flex: 1 1 auto;
+        gap: 8px;
+        min-width: 0;
+        overflow-x: auto;
+        padding: 0;
+      }
+
+      .category-nav-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        padding: 0 0 14px;
+      }
+
+      .category-btn {
+        flex: 0 0 auto;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 8px 14px;
+        background: #fff;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .category-btn.active {
+        border-color: var(--primary);
+        background: var(--primary);
+        color: #fff;
+      }
+
+      .category-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto auto;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .category-row + .category-row {
+        margin-top: 8px;
+      }
+
+      .category-row input {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px 12px;
+        outline: 0;
+      }
+
+      .category-list {
+        display: grid;
+        gap: 8px;
+        padding: 20px;
+        overflow: auto;
+      }
+
+      .category-add {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+        padding: 10px 20px 20px;
+      }
+
+      .category-add input {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px 12px;
+        outline: 0;
+      }
+
+      .page {
+        padding: 20px 0 44px;
+      }
+
+      .status {
+        margin: 0 0 0px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .status.error {
+        color: var(--danger);
+        padding: 10px 20px;
+      }
+
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .count-pill {
+        border-radius: 999px;
+        padding: 8px 12px;
+        background: #fff;
+        color: var(--primary-dark);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .view-switch {
+        display: flex;
+        gap: 6px;
+        padding: 4px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fff;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        min-height: 270px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        box-shadow: 0 8px 24px rgba(116, 39, 70, 0.06);
+        overflow: hidden;
+        cursor: pointer;
+      }
+
+      .card-body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex: 1;
+        padding: 16px;
+      }
+
+      .card-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .tag {
+        width: fit-content;
+        align-self: flex-start;
+        border-radius: 999px;
+        padding: 5px 9px;
+        background: var(--soft);
+        color: var(--primary-dark);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .actions {
+        display: flex;
+        gap: 4px;
+      }
+
+      .brand {
+        margin: 0 0 6px;
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .name {
+        margin: 0;
+        min-height: 48px;
+        font-size: 17px;
+        line-height: 1.45;
+      }
+
+      .price {
+        margin-top: 16px;
+        color: var(--text);
+        font-size: 28px;
+        font-weight: 800;
+      }
+
+      .price-rating {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        margin-top: 16px;
+      }
+
+      .price-rating .price {
+        margin-top: 0;
+      }
+
+      .rating {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        color: #f0a500;
+        font-size: 14px;
+        white-space: nowrap;
+      }
+
+      .rating-empty {
+        color: #d6d0d4;
+      }
+
+      .meta {
+        display: grid;
+        gap: 8px;
+        border-top: 1px solid var(--line);
+        padding: 14px 16px;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .meta-pair {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .meta-chip {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .meta-shop {
+        background-color: #f1f1f1;
+        border-radius: 30px;
+        padding: 5px 10px;
+        color: #878787;
+      }
+
+      .thumb-strip,
+      .image-preview,
+      .detail-images {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .image-preview {
+        gap: 15px;
+        padding: 15px 0;
       }
 
       .preview-item {
         position: relative;
-        width: calc(100% / 2 - 10px);
+        width: calc(100% / 3 - 10px);
       }
 
-      .form-grid {
-        grid-template-columns: 1fr;
+      .image-remove-btn {
+        position: absolute;
+        top: -7px;
+        right: -7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        border: 1px solid #fff;
+        border-radius: 50%;
+        background: var(--danger);
+        color: #fff;
+        font-size: 10px;
+
+        line-height: 1;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+      }
+
+      .thumb,
+      .preview-img,
+      .detail-img {
+        width: calc(100% / 3 - 6px);
+        height: 92px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        object-fit: cover;
+        background: #fff3f7;
+      }
+
+      .preview-img {
+        width: 100%;
+        height: 152px;
+      }
+
+      .detail-img {
+        width: calc(100% / 3 - 6px);
+        height: 132px;
+      }
+
+      .image-viewer-img {
+        display: block;
+        max-width: min(920px, calc(100vw - 104px));
+        max-height: calc(100vh - 96px);
+        border-radius: 10px;
+        object-fit: contain;
+        background: #fff;
+        box-shadow: var(--shadow);
+      }
+
+      .detail-body {
+        display: grid;
+        flex: 1 1 auto;
+        gap: 16px;
+        min-height: 0;
+        padding: 20px;
+        overflow: auto;
+      }
+
+      #detailBody {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .detail-title {
+        display: grid;
+        gap: 8px;
+      }
+
+      .detail-title h3 {
+        margin: 0;
+        font-size: 22px;
+        line-height: 1.35;
       }
 
       .detail-grid {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
       }
 
-      .image-viewer-close {
+      .detail-cell {
+        display: grid;
+        gap: 8px;
+      }
+
+      .detail-cell span {
+        display: block;
+        color: #6f607a;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .detail-value {
+        min-height: 36px;
+        border: 1px solid #e4e1e6;
+        border-radius: 8px;
+        padding: 8px 12px;
+        background: #f7f7f8;
+        color: #18304a;
+        line-height: 1.35;
+      }
+
+      .detail-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+      }
+
+      #detailBody > .detail-actions {
+        position: static;
+        z-index: 2;
+        margin: 0;
+      }
+
+      .form-actions {
+        display: flex;
+        flex: 0 0 auto;
+        gap: 8px;
+        justify-content: center;
+        padding: 12px 20px;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .form-scroll {
+        display: grid;
+        gap: 14px;
+        min-height: 0;
+        overflow: auto;
+        padding: 20px;
+      }
+
+      #itemForm,
+      #detailEditForm {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        min-height: 0;
+        padding: 0;
+      }
+
+      #detailBody.editing {
+        padding: 0;
+        overflow: hidden;
+      }
+
+      #detailBody.editing #detailEditForm {
+        height: 100%;
+      }
+
+      #detailBody > .form-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        padding: 20px;
+        overflow: auto;
+      }
+
+      #detailEditForm > .detail-actions {
+        flex: 0 0 auto;
+        z-index: 2;
+      }
+
+      .inline-form {
+        padding: 0;
+      }
+
+      .note {
+        border-radius: 8px;
+        padding: 8px;
+        background: #f2f2f2;
+        color: var(--text);
+        font-weight: 400;
+        line-height: 1.45;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      table {
+        width: 100%;
+        min-width: 780px;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      th,
+      td {
+        padding: 14px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      th {
+        background: #fff3f7;
+        color: var(--primary-dark);
+        font-size: 13px;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .empty {
+        border: 1px dashed var(--line);
+        border-radius: 8px;
+        padding: 48px 16px;
+        background: rgba(255, 255, 255, 0.65);
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        z-index: 30;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        background: rgba(38, 50, 65, 0.58);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+
+      .modal.open {
+        display: flex;
+      }
+
+      .saving-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        display: none;
+        place-items: center;
+        background: rgba(255, 248, 251, 0.78);
+        backdrop-filter: blur(8px);
+      }
+
+      .saving-overlay.open {
+        display: grid;
+      }
+
+      .scroll-top-btn {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        z-index: 20;
+        width: 44px;
+        min-height: 44px;
+        border: 1px solid var(--line);
+        box-shadow: 0 10px 24px rgba(116, 39, 70, 0.16);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(8px);
+      }
+
+      .scroll-top-btn.visible {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
+      .saving-box {
+        display: grid;
+        gap: 12px;
+        place-items: center;
+        min-width: 180px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 22px 26px;
+        background: #fff;
+        box-shadow: var(--shadow);
+        color: var(--primary-dark);
+        font-weight: 800;
+      }
+
+      .saving-spinner {
+        width: 38px;
+        height: 38px;
+        border: 4px solid #f8dce7;
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: savingSpin 0.8s linear infinite;
+      }
+
+      @keyframes savingSpin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .dialog {
+        display: flex;
+        flex-direction: column;
+        width: min(520px, 100%);
+        max-height: min(740px, calc(100vh - 36px));
+        overflow: hidden;
+        border-radius: 10px;
+        background: #fff;
+        box-shadow: var(--shadow);
+      }
+
+      .dialog.image-viewer-dialog {
+        position: relative;
+        width: auto;
+        max-height: none;
+        overflow: visible;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .image-viewer-dialog .image-viewer-close {
         position: absolute;
-        top: 50%;
-        right: -46px;
+        top: 5px;
+        right: 5px;
+        z-index: 2;
+        background: #5050507d;
+        box-shadow: 0 10px 24px rgba(38, 50, 65, 0.22);
       }
-    }
-  </style>
-</head>
 
-<body>
-  <header class="app-header">
-    <div class="header-inner">
-      <div class="header-main">
-        <h1 class="title">彩妝庫存管理</h1>
-        <label class="search-box">
-          <span class="search-icon"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></span>
-          <input id="searchInput" type="search" placeholder="搜尋品名或品牌" autocomplete="off" />
-        </label>
-        <div class="header-actions">
-          <button class="primary-btn" id="addButton" type="button" onclick="window.openItemModal()">
-            ＋
-            <span>新增品項</span>
+      .dialog-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 15px;
+        background: var(--primary);
+        color: #fff;
+        flex: 0 0 auto;
+      }
+
+      .dialog-head h2 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .dialog-head-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .close-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.18);
+        color: #fff;
+        font-size: 24px;
+        line-height: 1;
+      }
+
+      form {
+        display: grid;
+        gap: 14px;
+        padding: 20px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+
+      .field label {
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .field input,
+      .field select,
+      .field textarea {
+        padding: 8px 12px;
+      }
+
+      .field textarea {
+        min-height: 92px;
+        resize: vertical;
+      }
+
+      .file-input {
+        border: 1px dashed var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        background: #fffafd;
+      }
+
+      .full {
+        grid-column: 1 / -1;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      @media (max-width: 720px) {
+        .header-main {
+          gap: 10px;
+          padding: 10px 0;
+        }
+
+        .header-actions {
+          margin-left: auto;
+        }
+
+        .search-box {
+          order: 3;
+          flex: 1 1 calc(100% - 50px);
+          margin-left: 0;
+        }
+
+        .icon-btn.filter-toggle-btn {
+          display: inline-flex;
+          order: 3;
+          flex: 0 0 40px;
+        }
+
+        .category-nav-row {
+          display: none;
+          padding: 0 0 12px;
+        }
+
+        .category-nav-row.open {
+          display: flex;
+        }
+
+        .title {
+          flex: 1 1 auto;
+          min-width: 0;
+          font-size: 20px;
+        }
+
+        .primary-btn span {
+          display: none;
+        }
+
+        .preview-item {
+          position: relative;
+          width: calc(100% / 2 - 10px);
+        }
+
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .detail-grid {
+          grid-template-columns: 1fr;
+        }
+
+        #detailBody > .form-scroll,
+        #detailEditForm > .form-scroll {
+          padding: 16px;
+        }
+
+        .form-actions {
+          padding: 10px 16px;
+        }
+
+        .detail-actions {
+          flex-wrap: wrap;
+        }
+
+        .image-viewer-close {
+          position: absolute;
+          top: 50%;
+          right: -46px;
+        }
+        .icon-btn {
+          width: 35px;
+        }
+        .primary-btn,
+        .icon-btn {
+          min-height: 35px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="header-main">
+          <h1 class="title">彩妝庫存管理</h1>
+          <label class="search-box">
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></span>
+            <input id="searchInput" type="search" placeholder="搜尋品名或品牌" autocomplete="off" />
+          </label>
+          <button
+            class="icon-btn filter-toggle-btn"
+            id="filterToggleButton"
+            type="button"
+            title="篩選分類"
+            aria-label="篩選分類"
+            aria-expanded="false"
+          >
+            <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+          </button>
+          <div class="header-actions">
+            <button class="primary-btn" id="addButton" type="button" onclick="window.openItemModal()">
+              ＋
+              <span>新增品項</span>
+            </button>
+          </div>
+        </div>
+        <div class="category-nav-row" id="categoryNavRow">
+          <nav class="category-bar" id="categoryBar" aria-label="分類"></nav>
+          <button class="icon-btn" id="categoryManageButton" type="button" title="管理分類" aria-label="管理分類">
+            <i class="fa-solid fa-gear" aria-hidden="true"></i>
           </button>
         </div>
       </div>
-      <div class="category-nav-row">
-        <nav class="category-bar" id="categoryBar" aria-label="分類"></nav>
-        <button class="icon-btn" id="categoryManageButton" type="button" title="管理分類" aria-label="管理分類">
-          <i class="fa-solid fa-gear" aria-hidden="true"></i>
-        </button>
-      </div>
-    </div>
-  </header>
+    </header>
 
-  <main class="page">
-    <p class="status" id="syncStatus"></p>
-    <div class="toolbar">
-      <div class="count-pill" id="resultCount">全部，共 0 件</div>
-      <div class="view-switch" aria-label="顯示模式">
-        <button class="icon-btn active" id="gridButton" type="button" title="卡片檢視">▦</button>
-        <button class="icon-btn" id="listButton" type="button" title="表格檢視">☰</button>
+    <main class="page">
+      <p class="status" id="syncStatus"></p>
+      <div class="toolbar">
+        <div class="count-pill" id="resultCount">全部，共 0 件</div>
+        <div class="view-switch" aria-label="顯示模式">
+          <button class="icon-btn active" id="gridButton" type="button" title="卡片檢視">▦</button>
+          <button class="icon-btn" id="listButton" type="button" title="表格檢視">☰</button>
+        </div>
       </div>
-    </div>
 
-    <section id="gridView" class="grid"></section>
-    <section id="listView" class="table-wrap hidden"></section>
-    <p id="emptyState" class="empty hidden">目前沒有符合條件的品項</p>
-    <nav class="pagination hidden" id="pagination" aria-label="分頁"></nav>
-  </main>
+      <section id="gridView" class="grid"></section>
+      <section id="listView" class="table-wrap hidden"></section>
+      <p id="emptyState" class="empty hidden">目前沒有符合條件的品項</p>
+    </main>
 
-  <div class="modal" id="itemModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="dialog">
-      <div class="dialog-head">
-        <h2 id="modalTitle">新增品項</h2>
-        <button class="close-btn" id="closeButton" type="button" aria-label="關閉">×</button>
-      </div>
-      <form id="itemForm">
-        <div class="form-scroll">
-          <input id="itemId" type="hidden" />
-          <div class="field full">
-            <label for="nameInput">品名 *</label>
-            <input id="nameInput" required />
+    <button class="icon-btn scroll-top-btn" id="scrollTopButton" type="button" title="回到頂端" aria-label="回到頂端">
+      <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+    </button>
+
+    <div class="modal" id="itemModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="dialog">
+        <div class="dialog-head">
+          <h2 id="modalTitle">新增品項</h2>
+          <button class="close-btn" id="closeButton" type="button" aria-label="關閉">×</button>
+        </div>
+        <form id="itemForm">
+          <div class="form-scroll">
+            <input id="itemId" type="hidden" />
+            <div class="field full">
+              <label for="nameInput">品名 *</label>
+              <input id="nameInput" required />
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="brandInput">品牌</label>
+                <input id="brandInput" />
+              </div>
+              <div class="field">
+                <label for="categoryInput">分類</label>
+                <select id="categoryInput"></select>
+              </div>
+              <div class="field">
+                <label for="priceInput">價格</label>
+                <input id="priceInput" type="number" min="0" inputmode="numeric" />
+              </div>
+              <div class="field">
+                <label for="ratingInput">評價星數</label>
+                <input id="ratingInput" type="number" min="0" max="5" step="1" inputmode="numeric" placeholder="0-5" />
+              </div>
+              <div class="field">
+                <label for="quantityInput">數量</label>
+                <input id="quantityInput" type="number" min="1" inputmode="numeric" />
+              </div>
+              <div class="field">
+                <label for="platformInput">購買平台</label>
+                <input id="platformInput" />
+              </div>
+              <div class="field full">
+                <label for="noteInput">備註</label>
+                <textarea id="noteInput"></textarea>
+              </div>
+              <div class="field full">
+                <label for="imageInput">圖片</label>
+                <input class="file-input" id="imageInput" type="file" accept="image/*" multiple />
+                <div class="image-preview" id="imagePreview"></div>
+              </div>
+            </div>
           </div>
-          <div class="form-grid">
-            <div class="field">
-              <label for="brandInput">品牌</label>
-              <input id="brandInput" />
-            </div>
-            <div class="field">
-              <label for="categoryInput">分類</label>
-              <select id="categoryInput"></select>
-            </div>
-            <div class="field">
-              <label for="priceInput">價格</label>
-              <input id="priceInput" type="number" min="0" inputmode="numeric" />
-            </div>
-            <div class="field">
-              <label for="quantityInput">數量</label>
-              <input id="quantityInput" type="number" min="1" inputmode="numeric" />
-            </div>
-            <div class="field full">
-              <label for="platformInput">購買平台</label>
-              <input id="platformInput" />
-            </div>
-            <div class="field full">
-              <label for="noteInput">備註</label>
-              <textarea id="noteInput"></textarea>
-            </div>
-            <div class="field full">
-              <label for="imageInput">圖片</label>
-              <input class="file-input" id="imageInput" type="file" accept="image/*" multiple />
-              <div class="image-preview" id="imagePreview"></div>
-            </div>
+          <div class="form-actions">
+            <button class="primary-btn" id="submitButton" type="submit">儲存</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <div class="dialog">
+        <div class="dialog-head">
+          <h2>品項內容</h2>
+          <button class="close-btn" id="detailCloseButton" type="button" aria-label="關閉">×</button>
+        </div>
+        <div class="detail-body" id="detailBody"></div>
+      </div>
+    </div>
+
+    <div class="modal" id="categoryModal" role="dialog" aria-modal="true" aria-labelledby="categoryModalTitle">
+      <div class="dialog">
+        <div class="dialog-head">
+          <h2 id="categoryModalTitle">管理分類</h2>
+          <div class="dialog-head-actions">
+            <span class="category-save-state" id="categorySaveState">未儲存</span>
+            <button class="close-btn" id="saveCategoriesButton" type="button" title="儲存分類" aria-label="儲存分類">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 3.75h12.2L20.25 6.8V20.25H3.75V3.75H5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+                <path d="M7.5 3.75v6h9v-6" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+                <path d="M7.5 20.25v-7.5h9v7.5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+                <path d="M14.25 6.25h1.25" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+              </svg>
+            </button>
+            <button class="close-btn" id="categoryCloseButton" type="button" aria-label="關閉">×</button>
           </div>
         </div>
-        <div class="form-actions">
-          <button class="primary-btn" id="submitButton" type="submit">儲存</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
-    <div class="dialog">
-      <div class="dialog-head">
-        <h2>品項內容</h2>
-        <button class="close-btn" id="detailCloseButton" type="button" aria-label="關閉">×</button>
-      </div>
-      <div class="detail-body" id="detailBody"></div>
-    </div>
-  </div>
-
-  <div class="modal" id="categoryModal" role="dialog" aria-modal="true" aria-labelledby="categoryModalTitle">
-    <div class="dialog">
-      <div class="dialog-head">
-        <h2 id="categoryModalTitle">管理分類</h2>
-        <div class="dialog-head-actions">
-          <span class="category-save-state" id="categorySaveState">未儲存</span>
-          <button class="close-btn" id="saveCategoriesButton" type="button" title="儲存分類" aria-label="儲存分類">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M5 3.75h12.2L20.25 6.8V20.25H3.75V3.75H5Z" stroke="currentColor" stroke-width="1.4"
-                stroke-linejoin="round" />
-              <path d="M7.5 3.75v6h9v-6" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
-              <path d="M7.5 20.25v-7.5h9v7.5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
-              <path d="M14.25 6.25h1.25" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
-            </svg>
-          </button>
-          <button class="close-btn" id="categoryCloseButton" type="button" aria-label="關閉">×</button>
-        </div>
-      </div>
-      <p class="status" id="categoryStatus"></p>
-      <div class="category-list" id="categoryList"></div>
-      <div class="category-add">
-        <input id="newCategoryInput" placeholder="新增分類名稱" />
-        <button class="primary-btn" id="addCategoryButton" type="button">新增</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="deleteConfirmModal" role="dialog" aria-modal="true" aria-labelledby="deleteConfirmTitle">
-    <div class="dialog">
-      <div class="dialog-head">
-        <h2 id="deleteConfirmTitle">確認刪除</h2>
-        <button class="close-btn" id="deleteCancelXButton" type="button" aria-label="關閉">×</button>
-      </div>
-      <div class="detail-body">
-        <p class="note" id="deleteConfirmMessage"></p>
-        <div class="detail-actions">
-          <button class="primary-btn" id="deleteConfirmButton" type="button">刪除</button>
-          <button class="primary-btn back-btn" id="deleteCancelButton" type="button">取消</button>
+        <p class="status" id="categoryStatus"></p>
+        <div class="category-list" id="categoryList"></div>
+        <div class="category-add">
+          <input id="newCategoryInput" placeholder="新增分類名稱" />
+          <button class="primary-btn" id="addCategoryButton" type="button">新增</button>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="modal" id="categoryUnsavedModal" role="dialog" aria-modal="true" aria-labelledby="categoryUnsavedTitle">
-    <div class="dialog">
-      <div class="dialog-head">
-        <h2 id="categoryUnsavedTitle">是否儲存</h2>
-        <button class="close-btn" id="categoryUnsavedCancelXButton" type="button" aria-label="關閉">×</button>
-      </div>
-      <div class="detail-body">
-        <p class="note">管理分類尚未儲存，是否要儲存這次改動？</p>
-        <div class="detail-actions">
-          <button class="primary-btn" id="categoryUnsavedSaveButton" type="button">儲存</button>
-          <button class="primary-btn back-btn" id="categoryUnsavedDiscardButton" type="button">不儲存</button>
+    <div class="modal" id="deleteConfirmModal" role="dialog" aria-modal="true" aria-labelledby="deleteConfirmTitle">
+      <div class="dialog">
+        <div class="dialog-head">
+          <h2 id="deleteConfirmTitle">確認刪除</h2>
+          <button class="close-btn" id="deleteCancelXButton" type="button" aria-label="關閉">×</button>
+        </div>
+        <div class="detail-body">
+          <p class="note" id="deleteConfirmMessage"></p>
+          <div class="detail-actions">
+            <button class="primary-btn" id="deleteConfirmButton" type="button">刪除</button>
+            <button class="primary-btn back-btn" id="deleteCancelButton" type="button">取消</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="modal" id="imageViewerModal" role="dialog" aria-modal="true" aria-label="圖片檢視">
-    <div class="dialog image-viewer-dialog">
-      <button class="close-btn image-viewer-close" id="imageViewerCloseButton" type="button" aria-label="關閉">×</button>
-      <img class="image-viewer-img" id="imageViewerImg" alt="放大圖片" />
+    <div class="modal" id="categoryUnsavedModal" role="dialog" aria-modal="true" aria-labelledby="categoryUnsavedTitle">
+      <div class="dialog">
+        <div class="dialog-head">
+          <h2 id="categoryUnsavedTitle">是否儲存</h2>
+          <button class="close-btn" id="categoryUnsavedCancelXButton" type="button" aria-label="關閉">×</button>
+        </div>
+        <div class="detail-body">
+          <p class="note">管理分類尚未儲存，是否要儲存這次改動？</p>
+          <div class="detail-actions">
+            <button class="primary-btn" id="categoryUnsavedSaveButton" type="button">儲存</button>
+            <button class="primary-btn back-btn" id="categoryUnsavedDiscardButton" type="button">不儲存</button>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <div class="saving-overlay" id="savingOverlay" aria-live="polite" aria-busy="true">
-    <div class="saving-box">
-      <div class="saving-spinner"></div>
-      <div id="savingText">正在儲存</div>
+    <div class="modal" id="imageViewerModal" role="dialog" aria-modal="true" aria-label="圖片檢視">
+      <div class="dialog image-viewer-dialog">
+        <button class="close-btn image-viewer-close" id="imageViewerCloseButton" type="button" aria-label="關閉">×</button>
+        <img class="image-viewer-img" id="imageViewerImg" alt="放大圖片" />
+      </div>
     </div>
-  </div>
 
-  <script>
-    // 填入 Apps Script 部署後取得的 Web App URL。空字串時會用瀏覽器 localStorage。
-    const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwz0g52Ts3ZUzGbkGSZneunCo1gvUdcUSPF3xSrpPI0VF6yqjXfAQXRrOADd66phfM/exec";
+    <div class="saving-overlay" id="savingOverlay" aria-live="polite" aria-busy="true">
+      <div class="saving-box">
+        <div class="saving-spinner"></div>
+        <div id="savingText">正在儲存</div>
+      </div>
+    </div>
 
-    const STORAGE_KEY = "makeup-inventory-items";
-    const CATEGORIES_KEY = "makeup-inventory-categories";
-    const ALL_CATEGORY = "全部";
-    const DEFAULT_CATEGORIES = ["妝前底妝防曬", "遮瑕校色", "定妝", "腮紅", "修容打亮", "眼彩", "眉彩", "唇彩", "工具"];
+    <script>
+      // 填入 Apps Script 部署後取得的 Web App URL。空字串時會用瀏覽器 localStorage。
+      const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwz0g52Ts3ZUzGbkGSZneunCo1gvUdcUSPF3xSrpPI0VF6yqjXfAQXRrOADd66phfM/exec";
 
-    function createId() {
-      if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
-      return `item-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-    }
+      const STORAGE_KEY = "makeup-inventory-items";
+      const CATEGORIES_KEY = "makeup-inventory-categories";
+      const ALL_CATEGORY = "全部";
+      const DEFAULT_CATEGORIES = ["妝前底妝防曬", "遮瑕校色", "定妝", "腮紅", "修容打亮", "眼彩", "眉彩", "唇彩", "工具"];
 
-    const SAMPLE_ITEMS = [
-      {
-        id: createId(),
-        category: "妝前底妝防曬",
-        name: "持久柔霧粉底液 SPF50 PA++++ 01 明亮色",
-        brand: "Maybelline",
-        price: 490,
-        quantity: 1,
-        platform: "MOMO",
-        note: "",
-      },
-      {
-        id: createId(),
-        category: "遮瑕校色",
-        name: "柔焦遮瑕膏 02 自然色",
-        brand: "The Saem",
-        price: 179,
-        quantity: 1,
-        platform: "蝦皮",
-        note: "適合局部暗沉",
-      },
-      {
-        id: createId(),
-        category: "眼彩",
-        name: "四色眼影盤 玫瑰棕",
-        brand: "Solone",
-        price: 320,
-        quantity: 1,
-        platform: "品牌官網",
-        note: "",
-      },
-      {
-        id: createId(),
-        category: "唇彩",
-        name: "水光唇釉 05 無花果",
-        brand: "rom&nd",
-        price: 299,
-        quantity: 2,
-        platform: "屈臣氏",
-        note: "一支放包包",
-      },
-    ];
-
-    const state = {
-      items: [],
-      categories: loadCategories(),
-      selectedCategory: ALL_CATEGORY,
-      searchQuery: "",
-      viewMode: "grid",
-      currentPage: 1,
-      pageSize: 20,
-      isSaving: false,
-      savingMessage: "正在儲存",
-      selectedItemId: "",
-      pendingDeleteItemId: "",
-      editingImages: [],
-      detailMode: "view",
-      categoryDraft: [],
-      categoryOriginal: [],
-      categoryDirty: false,
-    };
-
-    const els = {
-      categoryBar: document.querySelector("#categoryBar"),
-      categoryManageButton: document.querySelector("#categoryManageButton"),
-      searchInput: document.querySelector("#searchInput"),
-      syncStatus: document.querySelector("#syncStatus"),
-      resultCount: document.querySelector("#resultCount"),
-      gridView: document.querySelector("#gridView"),
-      listView: document.querySelector("#listView"),
-      emptyState: document.querySelector("#emptyState"),
-      pagination: document.querySelector("#pagination"),
-      gridButton: document.querySelector("#gridButton"),
-      listButton: document.querySelector("#listButton"),
-      addButton: document.querySelector("#addButton"),
-      modal: document.querySelector("#itemModal"),
-      modalTitle: document.querySelector("#modalTitle"),
-      closeButton: document.querySelector("#closeButton"),
-      form: document.querySelector("#itemForm"),
-      submitButton: document.querySelector("#submitButton"),
-      itemId: document.querySelector("#itemId"),
-      nameInput: document.querySelector("#nameInput"),
-      brandInput: document.querySelector("#brandInput"),
-      categoryInput: document.querySelector("#categoryInput"),
-      priceInput: document.querySelector("#priceInput"),
-      quantityInput: document.querySelector("#quantityInput"),
-      platformInput: document.querySelector("#platformInput"),
-      noteInput: document.querySelector("#noteInput"),
-      imageInput: document.querySelector("#imageInput"),
-      imagePreview: document.querySelector("#imagePreview"),
-      detailModal: document.querySelector("#detailModal"),
-      detailCloseButton: document.querySelector("#detailCloseButton"),
-      detailBody: document.querySelector("#detailBody"),
-      categoryModal: document.querySelector("#categoryModal"),
-      categoryCloseButton: document.querySelector("#categoryCloseButton"),
-      saveCategoriesButton: document.querySelector("#saveCategoriesButton"),
-      categorySaveState: document.querySelector("#categorySaveState"),
-      categoryStatus: document.querySelector("#categoryStatus"),
-      categoryList: document.querySelector("#categoryList"),
-      newCategoryInput: document.querySelector("#newCategoryInput"),
-      addCategoryButton: document.querySelector("#addCategoryButton"),
-      deleteConfirmModal: document.querySelector("#deleteConfirmModal"),
-      deleteConfirmMessage: document.querySelector("#deleteConfirmMessage"),
-      deleteCancelXButton: document.querySelector("#deleteCancelXButton"),
-      deleteCancelButton: document.querySelector("#deleteCancelButton"),
-      deleteConfirmButton: document.querySelector("#deleteConfirmButton"),
-      categoryUnsavedModal: document.querySelector("#categoryUnsavedModal"),
-      categoryUnsavedCancelXButton: document.querySelector("#categoryUnsavedCancelXButton"),
-      categoryUnsavedDiscardButton: document.querySelector("#categoryUnsavedDiscardButton"),
-      categoryUnsavedSaveButton: document.querySelector("#categoryUnsavedSaveButton"),
-      imageViewerModal: document.querySelector("#imageViewerModal"),
-      imageViewerCloseButton: document.querySelector("#imageViewerCloseButton"),
-      imageViewerImg: document.querySelector("#imageViewerImg"),
-      savingOverlay: document.querySelector("#savingOverlay"),
-      savingText: document.querySelector("#savingText"),
-    };
-
-    function useSheetApi() {
-      return SHEET_API_URL.trim().length > 0;
-    }
-
-    function setStatus(message, isError = false) {
-      els.syncStatus.textContent = message;
-      els.syncStatus.classList.toggle("error", isError);
-    }
-
-    function loadLocalItems() {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (!stored) return SAMPLE_ITEMS;
-
-      try {
-        const parsed = JSON.parse(stored);
-        return Array.isArray(parsed) ? parsed : SAMPLE_ITEMS;
-      } catch {
-        return SAMPLE_ITEMS;
+      function createId() {
+        if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
+        return `item-${Date.now()}-${Math.random().toString(36).slice(2)}`;
       }
-    }
 
-    function saveLocalItems() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
-    }
-
-    function loadCategories() {
-      const stored = localStorage.getItem(CATEGORIES_KEY);
-      if (!stored) return [...DEFAULT_CATEGORIES];
-
-      try {
-        const parsed = JSON.parse(stored);
-        return normalizeCategories(Array.isArray(parsed) ? parsed : DEFAULT_CATEGORIES);
-      } catch {
-        return [...DEFAULT_CATEGORIES];
-      }
-    }
-
-    function saveCategories() {
-      localStorage.setItem(CATEGORIES_KEY, JSON.stringify(state.categories));
-    }
-
-    function normalizeCategories(categories) {
-      return [
-        ...new Set(
-          categories
-            .map((category) => String(category).trim())
-            .filter(Boolean)
-            .filter((category) => category !== ALL_CATEGORY),
-        ),
-      ];
-    }
-
-    function getItemCategories() {
-      return normalizeCategories(state.items.map((item) => item.category));
-    }
-
-    function getCategories() {
-      return normalizeCategories([...state.categories, ...getItemCategories()]);
-    }
-
-    function getAllCategories() {
-      return [ALL_CATEGORY, ...getCategories()];
-    }
-
-    function sheetJsonp(action) {
-      return new Promise((resolve, reject) => {
-        const callbackName = `sheetCallback_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-        const script = document.createElement("script");
-        const url = new URL(SHEET_API_URL);
-
-        url.searchParams.set("action", action);
-        url.searchParams.set("callback", callbackName);
-
-        window[callbackName] = (data) => {
-          delete window[callbackName];
-          script.remove();
-          resolve(data);
-        };
-
-        script.onerror = () => {
-          delete window[callbackName];
-          script.remove();
-          reject(new Error("無法讀取 Google 試算表資料"));
-        };
-
-        script.src = url.toString();
-        document.body.appendChild(script);
-      });
-    }
-
-    async function sheetPost(action, item) {
-      await fetch(SHEET_API_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8",
+      const SAMPLE_ITEMS = [
+        {
+          id: createId(),
+          category: "妝前底妝防曬",
+          name: "持久柔霧粉底液 SPF50 PA++++ 01 明亮色",
+          brand: "Maybelline",
+          price: 490,
+          rating: 4,
+          quantity: 1,
+          platform: "MOMO",
+          note: "",
         },
-        body: JSON.stringify({ action, item }),
-      });
-    }
+        {
+          id: createId(),
+          category: "遮瑕校色",
+          name: "柔焦遮瑕膏 02 自然色",
+          brand: "The Saem",
+          price: 179,
+          rating: 3,
+          quantity: 1,
+          platform: "蝦皮",
+          note: "適合局部暗沉",
+        },
+        {
+          id: createId(),
+          category: "眼彩",
+          name: "四色眼影盤 玫瑰棕",
+          brand: "Solone",
+          price: 320,
+          rating: 5,
+          quantity: 1,
+          platform: "品牌官網",
+          note: "",
+        },
+        {
+          id: createId(),
+          category: "唇彩",
+          name: "水光唇釉 05 無花果",
+          brand: "rom&nd",
+          price: 299,
+          rating: 4,
+          quantity: 2,
+          platform: "屈臣氏",
+          note: "一支放包包",
+        },
+      ];
 
-    async function loadItems() {
-      if (!useSheetApi()) {
-        state.items = loadLocalItems();
-        setStatus("目前使用本機儲存。填入 Apps Script Web App URL 後會改用 Google 試算表。");
+      const state = {
+        items: [],
+        categories: loadCategories(),
+        selectedCategory: ALL_CATEGORY,
+        searchQuery: "",
+        viewMode: "grid",
+        isSaving: false,
+        savingMessage: "正在儲存",
+        selectedItemId: "",
+        pendingDeleteItemId: "",
+        editingImages: [],
+        detailMode: "view",
+        categoryDraft: [],
+        categoryOriginal: [],
+        categoryDirty: false,
+      };
+
+      const els = {
+        categoryBar: document.querySelector("#categoryBar"),
+        categoryNavRow: document.querySelector("#categoryNavRow"),
+        filterToggleButton: document.querySelector("#filterToggleButton"),
+        categoryManageButton: document.querySelector("#categoryManageButton"),
+        searchInput: document.querySelector("#searchInput"),
+        syncStatus: document.querySelector("#syncStatus"),
+        resultCount: document.querySelector("#resultCount"),
+        gridView: document.querySelector("#gridView"),
+        listView: document.querySelector("#listView"),
+        emptyState: document.querySelector("#emptyState"),
+        scrollTopButton: document.querySelector("#scrollTopButton"),
+        gridButton: document.querySelector("#gridButton"),
+        listButton: document.querySelector("#listButton"),
+        addButton: document.querySelector("#addButton"),
+        modal: document.querySelector("#itemModal"),
+        modalTitle: document.querySelector("#modalTitle"),
+        closeButton: document.querySelector("#closeButton"),
+        form: document.querySelector("#itemForm"),
+        submitButton: document.querySelector("#submitButton"),
+        itemId: document.querySelector("#itemId"),
+        nameInput: document.querySelector("#nameInput"),
+        brandInput: document.querySelector("#brandInput"),
+        categoryInput: document.querySelector("#categoryInput"),
+        priceInput: document.querySelector("#priceInput"),
+        ratingInput: document.querySelector("#ratingInput"),
+        quantityInput: document.querySelector("#quantityInput"),
+        platformInput: document.querySelector("#platformInput"),
+        noteInput: document.querySelector("#noteInput"),
+        imageInput: document.querySelector("#imageInput"),
+        imagePreview: document.querySelector("#imagePreview"),
+        detailModal: document.querySelector("#detailModal"),
+        detailCloseButton: document.querySelector("#detailCloseButton"),
+        detailBody: document.querySelector("#detailBody"),
+        categoryModal: document.querySelector("#categoryModal"),
+        categoryCloseButton: document.querySelector("#categoryCloseButton"),
+        saveCategoriesButton: document.querySelector("#saveCategoriesButton"),
+        categorySaveState: document.querySelector("#categorySaveState"),
+        categoryStatus: document.querySelector("#categoryStatus"),
+        categoryList: document.querySelector("#categoryList"),
+        newCategoryInput: document.querySelector("#newCategoryInput"),
+        addCategoryButton: document.querySelector("#addCategoryButton"),
+        deleteConfirmModal: document.querySelector("#deleteConfirmModal"),
+        deleteConfirmMessage: document.querySelector("#deleteConfirmMessage"),
+        deleteCancelXButton: document.querySelector("#deleteCancelXButton"),
+        deleteCancelButton: document.querySelector("#deleteCancelButton"),
+        deleteConfirmButton: document.querySelector("#deleteConfirmButton"),
+        categoryUnsavedModal: document.querySelector("#categoryUnsavedModal"),
+        categoryUnsavedCancelXButton: document.querySelector("#categoryUnsavedCancelXButton"),
+        categoryUnsavedDiscardButton: document.querySelector("#categoryUnsavedDiscardButton"),
+        categoryUnsavedSaveButton: document.querySelector("#categoryUnsavedSaveButton"),
+        imageViewerModal: document.querySelector("#imageViewerModal"),
+        imageViewerCloseButton: document.querySelector("#imageViewerCloseButton"),
+        imageViewerImg: document.querySelector("#imageViewerImg"),
+        savingOverlay: document.querySelector("#savingOverlay"),
+        savingText: document.querySelector("#savingText"),
+      };
+
+      function useSheetApi() {
+        return SHEET_API_URL.trim().length > 0;
+      }
+
+      function setStatus(message, isError = false) {
+        els.syncStatus.textContent = message;
+        els.syncStatus.classList.toggle("error", isError);
+      }
+
+      function loadLocalItems() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) return SAMPLE_ITEMS;
+
+        try {
+          const parsed = JSON.parse(stored);
+          return Array.isArray(parsed) ? parsed : SAMPLE_ITEMS;
+        } catch {
+          return SAMPLE_ITEMS;
+        }
+      }
+
+      function saveLocalItems() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
+      }
+
+      function loadCategories() {
+        const stored = localStorage.getItem(CATEGORIES_KEY);
+        if (!stored) return [...DEFAULT_CATEGORIES];
+
+        try {
+          const parsed = JSON.parse(stored);
+          return normalizeCategories(Array.isArray(parsed) ? parsed : DEFAULT_CATEGORIES);
+        } catch {
+          return [...DEFAULT_CATEGORIES];
+        }
+      }
+
+      function saveCategories() {
+        localStorage.setItem(CATEGORIES_KEY, JSON.stringify(state.categories));
+      }
+
+      function normalizeCategories(categories) {
+        return [
+          ...new Set(
+            categories
+              .map((category) => String(category).trim())
+              .filter(Boolean)
+              .filter((category) => category !== ALL_CATEGORY),
+          ),
+        ];
+      }
+
+      function getItemCategories() {
+        return normalizeCategories(state.items.map((item) => item.category));
+      }
+
+      function getCategories() {
+        return normalizeCategories([...state.categories, ...getItemCategories()]);
+      }
+
+      function getAllCategories() {
+        return [ALL_CATEGORY, ...getCategories()];
+      }
+
+      function sheetJsonp(action) {
+        return new Promise((resolve, reject) => {
+          const callbackName = `sheetCallback_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+          const script = document.createElement("script");
+          const url = new URL(SHEET_API_URL);
+
+          url.searchParams.set("action", action);
+          url.searchParams.set("callback", callbackName);
+
+          window[callbackName] = (data) => {
+            delete window[callbackName];
+            script.remove();
+            resolve(data);
+          };
+
+          script.onerror = () => {
+            delete window[callbackName];
+            script.remove();
+            reject(new Error("無法讀取 Google 試算表資料"));
+          };
+
+          script.src = url.toString();
+          document.body.appendChild(script);
+        });
+      }
+
+      async function sheetPost(action, item) {
+        await fetch(SHEET_API_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+          body: JSON.stringify({ action, item }),
+        });
+      }
+
+      async function loadItems() {
+        if (!useSheetApi()) {
+          state.items = loadLocalItems();
+          setStatus("目前使用本機儲存。填入 Apps Script Web App URL 後會改用 Google 試算表。");
+          render();
+          return;
+        }
+
+        setStatus("正在讀取 Google 試算表...");
+        try {
+          const data = await sheetJsonp("list");
+          state.items = Array.isArray(data.items) ? data.items : [];
+          setStatus("已連線 Google 試算表。");
+        } catch (error) {
+          state.items = loadLocalItems();
+          setStatus(`${error.message}，暫時改用本機資料。`, true);
+        }
         render();
-        return;
       }
 
-      setStatus("正在讀取 Google 試算表...");
-      try {
-        const data = await sheetJsonp("list");
-        state.items = Array.isArray(data.items) ? data.items : [];
-        setStatus("已連線 Google 試算表。");
-      } catch (error) {
-        state.items = loadLocalItems();
-        setStatus(`${error.message}，暫時改用本機資料。`, true);
+      function updateItemState(action, item) {
+        const index = state.items.findIndex((current) => current.id === item.id);
+        if (action === "delete") {
+          state.items = state.items.filter((current) => current.id !== item.id);
+        } else if (index >= 0) {
+          state.items[index] = item;
+        } else {
+          state.items.unshift(item);
+        }
       }
-      render();
-    }
 
-    function updateItemState(action, item) {
-      const index = state.items.findIndex((current) => current.id === item.id);
-      if (action === "delete") {
-        state.items = state.items.filter((current) => current.id !== item.id);
-      } else if (index >= 0) {
-        state.items[index] = item;
-      } else {
-        state.items.unshift(item);
-      }
-    }
+      async function persistItem(action, item) {
+        if (!useSheetApi()) {
+          updateItemState(action, item);
+          saveLocalItems();
+          render();
+          return;
+        }
 
-    async function persistItem(action, item) {
-      if (!useSheetApi()) {
+        setStatus("正在同步 Google 試算表...");
+        await sheetPost(action, item);
         updateItemState(action, item);
-        saveLocalItems();
+        setStatus("已同步 Google 試算表。");
         render();
-        return;
       }
 
-      setStatus("正在同步 Google 試算表...");
-      await sheetPost(action, item);
-      updateItemState(action, item);
-      setStatus("已同步 Google 試算表。");
-      render();
-    }
-
-    function escapeHtml(value) {
-      return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    function money(value) {
-      return Number(value || 0).toLocaleString("zh-TW");
-    }
-
-    function itemImages(item) {
-      if (!item) return [];
-      if (Array.isArray(item.images)) return item.images.filter(Boolean);
-      if (!item.images) return [];
-      try {
-        const parsed = JSON.parse(item.images);
-        return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
-      } catch {
-        return [];
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
       }
-    }
 
-    function platformMerchant(value) {
-      return String(value || "未填平台").trim();
-    }
+      function money(value) {
+        return Number(value || 0).toLocaleString("zh-TW");
+      }
 
-    function renderImagePreview() {
-      if (!els.imagePreview) return;
-      els.imagePreview.innerHTML = renderImagePreviewMarkup();
-    }
+      function normalizeRating(value) {
+        if (value === "" || value === null || value === undefined) return 0;
+        return Math.min(5, Math.max(0, Math.round(Number(value) || 0)));
+      }
 
-    function renderImagePreviewMarkup() {
-      return state.editingImages
-        .map(
-          (src, index) => `
+      function renderRating(value) {
+        const rating = normalizeRating(value);
+        if (rating <= 0) return "";
+        return `
+        <span class="rating" title="評價 ${rating} / 5" aria-label="評價 ${rating} / 5">
+          ${Array.from({ length: 5 }, (_, index) => `<i class="fa-${index < rating ? "solid" : "regular"} fa-star${index >= rating ? " rating-empty" : ""}" aria-hidden="true"></i>`).join("")}
+        </span>
+      `;
+      }
+
+      function itemImages(item) {
+        if (!item) return [];
+        if (Array.isArray(item.images)) return item.images.filter(Boolean);
+        if (!item.images) return [];
+        try {
+          const parsed = JSON.parse(item.images);
+          return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function platformMerchant(value) {
+        return String(value || "未填平台").trim();
+      }
+
+      function renderImagePreview() {
+        if (!els.imagePreview) return;
+        els.imagePreview.innerHTML = renderImagePreviewMarkup();
+      }
+
+      function renderImagePreviewMarkup() {
+        return state.editingImages
+          .map(
+            (src, index) => `
             <div class="preview-item">
               <img class="preview-img" src="${escapeHtml(src)}" alt="品項圖片 ${index + 1}" data-image-view="${index}" />
               <button class="image-remove-btn" type="button" title="刪除圖片" data-image-remove="${index}">
@@ -1389,27 +1476,27 @@
               </button>
             </div>
           `,
-        )
-        .join("");
-    }
+          )
+          .join("");
+      }
 
-    function syncBodyScrollLock() {
-      const hasOpenModal = Boolean(document.querySelector(".modal.open"));
-      document.body.style.overflow = hasOpenModal ? "hidden" : "";
-    }
+      function syncBodyScrollLock() {
+        const hasOpenModal = Boolean(document.querySelector(".modal.open"));
+        document.body.style.overflow = hasOpenModal ? "hidden" : "";
+      }
 
-    function resetDialogScroll(modal) {
-      const scrollTargets = modal.querySelectorAll(".dialog, form, .form-scroll, .detail-body, .category-list");
-      scrollTargets.forEach((target) => {
-        target.scrollTop = 0;
-      });
-    }
+      function resetDialogScroll(modal) {
+        const scrollTargets = modal.querySelectorAll(".dialog, form, .form-scroll, .detail-body, .category-list");
+        scrollTargets.forEach((target) => {
+          target.scrollTop = 0;
+        });
+      }
 
-    function renderInlineEditForm(item) {
-      fillCategoryOptions();
-      state.editingImages = itemImages(item);
-      els.detailBody.classList.add("editing");
-      els.detailBody.innerHTML = `
+      function renderInlineEditForm(item) {
+        fillCategoryOptions();
+        state.editingImages = itemImages(item);
+        els.detailBody.classList.add("editing");
+        els.detailBody.innerHTML = `
           <form class="inline-form" id="detailEditForm">
             <div class="form-scroll">
               <input id="detailItemId" type="hidden" value="${escapeHtml(item.id)}" />
@@ -1426,11 +1513,11 @@
                   <label for="detailCategoryInput">分類</label>
                   <select id="detailCategoryInput">
                     ${getCategories()
-          .map(
-            (category) =>
-              `<option value="${escapeHtml(category)}" ${category === item.category ? "selected" : ""}>${escapeHtml(category)}</option>`,
-          )
-          .join("")}
+                      .map(
+                        (category) =>
+                          `<option value="${escapeHtml(category)}" ${category === item.category ? "selected" : ""}>${escapeHtml(category)}</option>`,
+                      )
+                      .join("")}
                   </select>
                 </div>
                 <div class="field">
@@ -1438,10 +1525,14 @@
                   <input id="detailPriceInput" type="number" min="0" inputmode="numeric" value="${escapeHtml(item.price || 0)}" />
                 </div>
                 <div class="field">
+                  <label for="detailRatingInput">評價星數</label>
+                  <input id="detailRatingInput" type="number" min="0" max="5" step="1" inputmode="numeric" placeholder="0-5" value="${escapeHtml(normalizeRating(item.rating) || "")}" />
+                </div>
+                <div class="field">
                   <label for="detailQuantityInput">數量</label>
                   <input id="detailQuantityInput" type="number" min="1" inputmode="numeric" value="${escapeHtml(item.quantity || 1)}" />
                 </div>
-                <div class="field full">
+                <div class="field">
                   <label for="detailPlatformInput">購買平台</label>
                   <input id="detailPlatformInput" value="${escapeHtml(item.platform || "")}" />
                 </div>
@@ -1462,79 +1553,83 @@
             </div>
           </form>
         `;
-    }
+      }
 
-    function readImageFile(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const image = new Image();
-          image.onload = () => {
-            const maxSize = 900;
-            const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
-            const canvas = document.createElement("canvas");
-            canvas.width = Math.round(image.width * scale);
-            canvas.height = Math.round(image.height * scale);
-            const context = canvas.getContext("2d");
-            context.drawImage(image, 0, 0, canvas.width, canvas.height);
-            resolve(canvas.toDataURL("image/jpeg", 0.78));
+      function readImageFile(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const image = new Image();
+            image.onload = () => {
+              const maxSize = 900;
+              const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
+              const canvas = document.createElement("canvas");
+              canvas.width = Math.round(image.width * scale);
+              canvas.height = Math.round(image.height * scale);
+              const context = canvas.getContext("2d");
+              context.drawImage(image, 0, 0, canvas.width, canvas.height);
+              resolve(canvas.toDataURL("image/jpeg", 0.78));
+            };
+            image.onerror = () => reject(new Error(`圖片格式無法讀取：${file.name}`));
+            image.src = reader.result;
           };
-          image.onerror = () => reject(new Error(`圖片格式無法讀取：${file.name}`));
-          image.src = reader.result;
-        };
-        reader.onerror = () => reject(new Error(`讀取圖片失敗：${file.name}`));
-        reader.readAsDataURL(file);
-      });
-    }
+          reader.onerror = () => reject(new Error(`讀取圖片失敗：${file.name}`));
+          reader.readAsDataURL(file);
+        });
+      }
 
-    function filteredItems() {
-      const keyword = state.searchQuery.trim().toLowerCase();
-      return state.items.filter((item) => {
-        const matchCategory = state.selectedCategory === ALL_CATEGORY || item.category === state.selectedCategory;
-        const matchKeyword = !keyword || `${item.name} ${item.brand}`.toLowerCase().includes(keyword);
-        return matchCategory && matchKeyword;
-      });
-    }
+      function filteredItems() {
+        const keyword = state.searchQuery.trim().toLowerCase();
+        return state.items.filter((item) => {
+          const matchCategory = state.selectedCategory === ALL_CATEGORY || item.category === state.selectedCategory;
+          const matchKeyword = !keyword || `${item.name} ${item.brand}`.toLowerCase().includes(keyword);
+          return matchCategory && matchKeyword;
+        });
+      }
 
-    function renderCategories() {
-      els.categoryBar.innerHTML = getAllCategories()
-        .map(
-          (category) =>
-            `<button class="category-btn ${category === state.selectedCategory ? "active" : ""}" type="button" data-category="${escapeHtml(category)}">${escapeHtml(category)}</button>`,
-        )
-        .join("");
-    }
+      function renderCategories() {
+        els.categoryBar.innerHTML = getAllCategories()
+          .map(
+            (category) =>
+              `<button class="category-btn ${category === state.selectedCategory ? "active" : ""}" type="button" data-category="${escapeHtml(category)}">${escapeHtml(category)}</button>`,
+          )
+          .join("");
+      }
 
-    function renderCategoryManager() {
-      els.categoryList.innerHTML = state.categoryDraft
-        .map(
-          (category, index) => `
+      function renderCategoryManager() {
+        els.categoryList.innerHTML = state.categoryDraft
+          .map(
+            (category, index) => `
               <div class="category-row" data-category-row="${index}">
                 <input value="${escapeHtml(category)}" data-category-index="${index}" />
                 <button class="primary-btn danger-btn" type="button" title="刪除分類" data-category-action="delete" data-category-index="${index}">刪除</button>
               </div>
             `,
-        )
-        .join("");
-    }
+          )
+          .join("");
+      }
 
-    function renderGrid(items) {
-      els.gridView.innerHTML = items
-        .map(
-          (item) => `
+      function renderGrid(items) {
+        els.gridView.innerHTML = items
+          .map(
+            (item) => `
               <article class="card" data-action="detail" data-id="${escapeHtml(item.id)}" tabindex="0">
                 <div class="card-body">
                   <p class="brand">${escapeHtml(item.brand || "未填品牌")}</p>
                   <h3 class="name">${escapeHtml(item.name)}</h3>
                   <span class="tag">${escapeHtml(item.category)}</span>
-                  ${itemImages(item).length
-              ? `<div class="thumb-strip">${itemImages(item)
-                .slice(0, 3)
-                .map((src, index) => `<img class="thumb" src="${escapeHtml(src)}" alt="品項圖片 ${index + 1}" />`)
-                .join("")}</div>`
-              : ""
-            }
-                  <div class="price">$${money(item.price)}</div>
+                  ${
+                    itemImages(item).length
+                      ? `<div class="thumb-strip">${itemImages(item)
+                          .slice(0, 3)
+                          .map((src, index) => `<img class="thumb" src="${escapeHtml(src)}" alt="品項圖片 ${index + 1}" />`)
+                          .join("")}</div>`
+                      : ""
+                  }
+                  <div class="price-rating">
+                    <div class="price">$${money(item.price)}</div>
+                    ${renderRating(item.rating)}
+                  </div>
                 </div>
                 <div class="meta">
                   <div class="meta-pair">
@@ -1545,12 +1640,12 @@
                 </div>
               </article>
             `,
-        )
-        .join("");
-    }
+          )
+          .join("");
+      }
 
-    function renderTable(items) {
-      els.listView.innerHTML = `
+      function renderTable(items) {
+        els.listView.innerHTML = `
           <table>
             <thead>
               <tr>
@@ -1563,727 +1658,712 @@
             </thead>
             <tbody>
               ${items
-          .map(
-            (item) => `
+                .map(
+                  (item) => `
                     <tr data-action="detail" data-id="${escapeHtml(item.id)}" tabindex="0">
                       <td>
                         <strong>${escapeHtml(item.name)}</strong><br />
                         <span class="brand">${escapeHtml(item.brand || "未填品牌")}</span>
                       </td>
                       <td><span class="tag">${escapeHtml(item.category)}</span></td>
-                      <td>$${money(item.price)}</td>
+                      <td>$${money(item.price)} ${renderRating(item.rating)}</td>
                       <td>${escapeHtml(item.quantity || 1)}</td>
                       <td>${escapeHtml(platformMerchant(item.platform))}${item.note ? `<br /><span class="note">${escapeHtml(item.note)}</span>` : ""}</td>
                     </tr>
                   `,
-          )
-          .join("")}
+                )
+                .join("")}
             </tbody>
           </table>
         `;
-    }
-
-    function pageItems(items) {
-      const pageCount = Math.max(1, Math.ceil(items.length / state.pageSize));
-      state.currentPage = Math.min(Math.max(1, state.currentPage), pageCount);
-      const start = (state.currentPage - 1) * state.pageSize;
-      return {
-        items: items.slice(start, start + state.pageSize),
-        pageCount,
-        start,
-      };
-    }
-
-    function visiblePages(pageCount) {
-      const pages = new Set([1, pageCount]);
-      for (let page = state.currentPage - 2; page <= state.currentPage + 2; page += 1) {
-        if (page >= 1 && page <= pageCount) pages.add(page);
-      }
-      return [...pages].sort((a, b) => a - b);
-    }
-
-    function renderPagination(totalItems, pageCount) {
-      if (totalItems <= state.pageSize) {
-        els.pagination.innerHTML = "";
-        els.pagination.classList.add("hidden");
-        return;
       }
 
-      let previousPage = 0;
-      const pageButtons = visiblePages(pageCount)
-        .map((page) => {
-          const gap = page - previousPage > 1 ? `<span class="page-ellipsis" aria-hidden="true">...</span>` : "";
-          previousPage = page;
-          return `${gap}<button class="page-btn ${page === state.currentPage ? "active" : ""}" type="button" data-page="${page}" aria-label="第 ${page} 頁">${page}</button>`;
-        })
-        .join("");
+      function render() {
+        const items = filteredItems();
+        renderCategories();
+        renderGrid(items);
+        renderTable(items);
 
-      els.pagination.innerHTML = `
-          <button class="page-btn" type="button" data-page="${state.currentPage - 1}" ${state.currentPage === 1 ? "disabled" : ""}>上一頁</button>
-          ${pageButtons}
-          <button class="page-btn" type="button" data-page="${state.currentPage + 1}" ${state.currentPage === pageCount ? "disabled" : ""}>下一頁</button>
-        `;
-      els.pagination.classList.remove("hidden");
-    }
-
-    function render() {
-      const items = filteredItems();
-      const page = pageItems(items);
-      renderCategories();
-      renderGrid(page.items);
-      renderTable(page.items);
-
-      const end = Math.min(page.start + page.items.length, items.length);
-      els.resultCount.textContent =
-        items.length > state.pageSize
-          ? `${state.selectedCategory}，共 ${items.length} 件（顯示 ${page.start + 1}-${end}）`
-          : `${state.selectedCategory}，共 ${items.length} 件`;
-      els.gridView.classList.toggle("hidden", state.viewMode !== "grid" || page.items.length === 0);
-      els.listView.classList.toggle("hidden", state.viewMode !== "list" || page.items.length === 0);
-      els.emptyState.classList.toggle("hidden", items.length !== 0);
-      renderPagination(items.length, page.pageCount);
-      els.gridButton.classList.toggle("active", state.viewMode === "grid");
-      els.listButton.classList.toggle("active", state.viewMode === "list");
-      els.submitButton.disabled = state.isSaving;
-      els.deleteConfirmButton.disabled = state.isSaving;
-      els.savingText.textContent = state.savingMessage;
-      els.savingOverlay.classList.toggle("open", state.isSaving);
-    }
-
-    function renderDetail(item) {
-      if (state.detailMode === "edit") {
-        renderInlineEditForm(item);
-        return;
+        els.resultCount.textContent = `${state.selectedCategory}，共 ${items.length} 件`;
+        els.gridView.classList.toggle("hidden", state.viewMode !== "grid" || items.length === 0);
+        els.listView.classList.toggle("hidden", state.viewMode !== "list" || items.length === 0);
+        els.emptyState.classList.toggle("hidden", items.length !== 0);
+        els.gridButton.classList.toggle("active", state.viewMode === "grid");
+        els.listButton.classList.toggle("active", state.viewMode === "list");
+        els.submitButton.disabled = state.isSaving;
+        els.deleteConfirmButton.disabled = state.isSaving;
+        els.savingText.textContent = state.savingMessage;
+        els.savingOverlay.classList.toggle("open", state.isSaving);
       }
 
-      els.detailBody.classList.remove("editing");
-      const images = itemImages(item);
-      els.detailBody.innerHTML = `
-          <div class="detail-title">
-            <p class="brand">${escapeHtml(item.brand || "未填品牌")}</p>
-            <h3 id="detailTitle">${escapeHtml(item.name)}</h3>
-            <span class="tag">${escapeHtml(item.category)}</span>
-          </div>
-          ${images.length
-          ? `<div class="detail-images">${images
-            .map(
-              (src, index) =>
-                `<img class="detail-img" src="${escapeHtml(src)}" alt="品項圖片 ${index + 1}" data-detail-image-view="${index}" />`,
-            )
-            .join("")}</div>`
-          : ""
+      function renderDetail(item) {
+        if (state.detailMode === "edit") {
+          renderInlineEditForm(item);
+          return;
         }
-          <div class="detail-grid">
-            <div class="detail-cell"><span>單價</span><div class="detail-value">$${money(item.price)}</div></div>
-            <div class="detail-cell"><span>數量</span><div class="detail-value">${escapeHtml(item.quantity || 1)}</div></div>
-            <div class="detail-cell"><span>購買平台</span><div class="detail-value">${escapeHtml(platformMerchant(item.platform))}</div></div>
-            <div class="detail-cell"><span>小計</span><div class="detail-value">$${money((Number(item.price) || 0) * (Number(item.quantity) || 1))}</div></div>
+
+        els.detailBody.classList.remove("editing");
+        const images = itemImages(item);
+        els.detailBody.innerHTML = `
+          <div class="form-scroll">
+            <div class="field full">
+              <label>品名</label>
+              <div class="detail-value" id="detailTitle">${escapeHtml(item.name)}</div>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label>品牌</label>
+                <div class="detail-value">${escapeHtml(item.brand || "未填品牌")}</div>
+              </div>
+              <div class="field">
+                <label>分類</label>
+                <div class="detail-value"><span class="tag">${escapeHtml(item.category)}</span></div>
+              </div>
+              <div class="field">
+                <label>價格</label>
+                <div class="detail-value">$${money(item.price)}</div>
+              </div>
+              <div class="field">
+                <label>評價星數</label>
+                <div class="detail-value">${renderRating(item.rating) || "未評價"}</div>
+              </div>
+              <div class="field">
+                <label>數量</label>
+                <div class="detail-value">${escapeHtml(item.quantity || 1)}</div>
+              </div>
+              <div class="field">
+                <label>購買平台</label>
+                <div class="detail-value">${escapeHtml(platformMerchant(item.platform))}</div>
+              </div>
+              <div class="field full">
+                <label>備註</label>
+                <div class="detail-value">${item.note ? escapeHtml(item.note) : "未填備註"}</div>
+              </div>
+              <div class="field full">
+                <label>圖片</label>
+                ${
+                  images.length
+                    ? `<div class="detail-images">${images
+                        .map(
+                          (src, index) =>
+                            `<img class="detail-img" src="${escapeHtml(src)}" alt="品項圖片 ${index + 1}" data-detail-image-view="${index}" />`,
+                        )
+                        .join("")}</div>`
+                    : `<div class="detail-value">未上傳圖片</div>`
+                }
+              </div>
+            </div>
           </div>
-          ${item.note ? `<div class="note">${escapeHtml(item.note)}</div>` : ""}
-          <div class="detail-actions">
+          <div class="detail-actions form-actions">
             <button class="primary-btn" type="button" data-detail-action="edit">編輯</button>
             <button class="primary-btn danger-btn" type="button" title="刪除" data-detail-action="delete">刪除</button>
           </div>
         `;
-    }
-
-    function fillCategoryOptions() {
-      els.categoryInput.innerHTML = getCategories()
-        .map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`)
-        .join("");
-    }
-
-    function openModal(item) {
-      const isEdit = Boolean(item);
-      els.modalTitle.textContent = isEdit ? "編輯品項" : "新增品項";
-      els.itemId.value = item?.id || "";
-      els.nameInput.value = item?.name || "";
-      els.brandInput.value = item?.brand || "";
-      fillCategoryOptions();
-      els.categoryInput.value =
-        item?.category || (state.selectedCategory === ALL_CATEGORY ? getCategories()[0] || DEFAULT_CATEGORIES[0] : state.selectedCategory);
-      els.priceInput.value = item?.price || "";
-      els.quantityInput.value = item?.quantity || 1;
-      els.platformInput.value = item?.platform || "";
-      els.noteInput.value = item?.note || "";
-      state.editingImages = itemImages(item);
-      els.imageInput.value = "";
-      renderImagePreview();
-      els.modal.classList.add("open");
-      resetDialogScroll(els.modal);
-      syncBodyScrollLock();
-      els.nameInput.focus();
-    }
-
-    window.openItemModal = openModal;
-
-    function closeModal() {
-      els.modal.classList.remove("open");
-      els.form.reset();
-      state.editingImages = [];
-      renderImagePreview();
-      syncBodyScrollLock();
-    }
-
-    function openDetail(item) {
-      state.selectedItemId = item.id;
-      state.pendingDeleteItemId = "";
-      state.detailMode = "view";
-      renderDetail(item);
-      els.detailModal.classList.add("open");
-      resetDialogScroll(els.detailModal);
-      syncBodyScrollLock();
-    }
-
-    function closeDetail() {
-      els.detailModal.classList.remove("open");
-      state.selectedItemId = "";
-      state.pendingDeleteItemId = "";
-      state.detailMode = "view";
-      syncBodyScrollLock();
-    }
-
-    function openCategoryModal() {
-      state.categoryDraft = getCategories();
-      state.categoryOriginal = [...state.categoryDraft];
-      state.categoryDirty = false;
-      setCategorySaveState("未儲存");
-      renderCategoryManager();
-      els.categoryModal.classList.add("open");
-      resetDialogScroll(els.categoryModal);
-      syncBodyScrollLock();
-      els.newCategoryInput.focus();
-    }
-
-    function requestCloseCategoryModal() {
-      if (state.categoryDirty) {
-        openCategoryUnsavedModal();
-        return;
       }
-      closeCategoryModal();
-    }
 
-    function closeCategoryModal() {
-      els.categoryModal.classList.remove("open");
-      els.newCategoryInput.value = "";
-      els.categoryStatus.textContent = "";
-      els.categoryStatus.classList.remove("error");
-      setCategorySaveState("未儲存");
-      state.categoryDraft = [];
-      state.categoryOriginal = [];
-      state.categoryDirty = false;
-      syncBodyScrollLock();
-    }
+      function fillCategoryOptions() {
+        els.categoryInput.innerHTML = getCategories()
+          .map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`)
+          .join("");
+      }
 
-    function openCategoryUnsavedModal() {
-      els.categoryUnsavedModal.classList.add("open");
-      resetDialogScroll(els.categoryUnsavedModal);
-      syncBodyScrollLock();
-    }
+      function openModal(item) {
+        const isEdit = Boolean(item);
+        els.modalTitle.textContent = isEdit ? "編輯品項" : "新增品項";
+        els.itemId.value = item?.id || "";
+        els.nameInput.value = item?.name || "";
+        els.brandInput.value = item?.brand || "";
+        fillCategoryOptions();
+        els.categoryInput.value =
+          item?.category || (state.selectedCategory === ALL_CATEGORY ? getCategories()[0] || DEFAULT_CATEGORIES[0] : state.selectedCategory);
+        els.priceInput.value = item?.price || "";
+        els.ratingInput.value = normalizeRating(item?.rating) || "";
+        els.quantityInput.value = item?.quantity || 1;
+        els.platformInput.value = item?.platform || "";
+        els.noteInput.value = item?.note || "";
+        state.editingImages = itemImages(item);
+        els.imageInput.value = "";
+        renderImagePreview();
+        els.modal.classList.add("open");
+        resetDialogScroll(els.modal);
+        syncBodyScrollLock();
+        els.nameInput.focus();
+      }
 
-    function closeCategoryUnsavedModal() {
-      els.categoryUnsavedModal.classList.remove("open");
-      syncBodyScrollLock();
-    }
+      window.openItemModal = openModal;
 
-    function discardCategoryChanges() {
-      closeCategoryUnsavedModal();
-      closeCategoryModal();
-    }
+      function closeModal() {
+        els.modal.classList.remove("open");
+        els.form.reset();
+        state.editingImages = [];
+        renderImagePreview();
+        syncBodyScrollLock();
+      }
 
-    async function saveAndCloseCategoryModal() {
-      closeCategoryUnsavedModal();
-      await saveAllCategoryEdits({ closeAfterSave: true });
-    }
+      function openDetail(item) {
+        state.selectedItemId = item.id;
+        state.pendingDeleteItemId = "";
+        state.detailMode = "view";
+        renderDetail(item);
+        els.detailModal.classList.add("open");
+        resetDialogScroll(els.detailModal);
+        syncBodyScrollLock();
+      }
 
-    function openDeleteConfirm(item) {
-      state.pendingDeleteItemId = item.id;
-      els.deleteConfirmMessage.textContent = `確定要刪除「${item.name}」嗎？刪除後會同步移除試算表資料。`;
-      els.deleteConfirmModal.classList.add("open");
-      resetDialogScroll(els.deleteConfirmModal);
-      syncBodyScrollLock();
-    }
+      function closeDetail() {
+        els.detailModal.classList.remove("open");
+        state.selectedItemId = "";
+        state.pendingDeleteItemId = "";
+        state.detailMode = "view";
+        syncBodyScrollLock();
+      }
 
-    function closeDeleteConfirm() {
-      els.deleteConfirmModal.classList.remove("open");
-      state.pendingDeleteItemId = "";
-      syncBodyScrollLock();
-    }
-
-    function openImageViewer(src) {
-      els.imageViewerImg.src = src;
-      els.imageViewerModal.classList.add("open");
-      resetDialogScroll(els.imageViewerModal);
-      syncBodyScrollLock();
-    }
-
-    function closeImageViewer() {
-      els.imageViewerModal.classList.remove("open");
-      els.imageViewerImg.removeAttribute("src");
-      syncBodyScrollLock();
-    }
-
-    function addCategory() {
-      const name = els.newCategoryInput.value.trim();
-      if (!name || name === ALL_CATEGORY) return;
-
-      if (!state.categoryDraft.includes(name)) {
-        state.categoryDraft.push(name);
-        state.categoryDraft = normalizeCategories(state.categoryDraft);
-        state.categoryDirty = true;
+      function openCategoryModal() {
+        state.categoryDraft = getCategories();
+        state.categoryOriginal = [...state.categoryDraft];
+        state.categoryDirty = false;
         setCategorySaveState("未儲存");
+        renderCategoryManager();
+        els.categoryModal.classList.add("open");
+        resetDialogScroll(els.categoryModal);
+        syncBodyScrollLock();
+        els.newCategoryInput.focus();
       }
 
-      els.newCategoryInput.value = "";
-      els.categoryStatus.textContent = "";
-      els.categoryStatus.classList.remove("error");
-      renderCategoryManager();
-    }
-
-    function setCategoryStatus(message, isError = false) {
-      els.categoryStatus.textContent = message;
-      els.categoryStatus.classList.toggle("error", isError);
-    }
-
-    function setCategorySaveState(message, isError = false) {
-      els.categorySaveState.textContent = message;
-      els.categorySaveState.classList.toggle("error", isError);
-    }
-
-    function getCategoryDraftFromInputs() {
-      const inputs = Array.from(els.categoryList.querySelectorAll(".category-row input[data-category-index]"));
-      return inputs.map((input) => input.value.trim());
-    }
-
-    async function renameCategory(oldName, newName) {
-      const cleanName = newName.trim();
-      if (!cleanName || cleanName === ALL_CATEGORY || cleanName === oldName) return;
-      if (getCategories().includes(cleanName)) {
-        alert("這個分類名稱已經存在。");
-        return;
-      }
-
-      state.categories = normalizeCategories(state.categories.map((category) => (category === oldName ? cleanName : category)));
-
-      const affectedItems = state.items.filter((item) => item.category === oldName).map((item) => ({ ...item, category: cleanName }));
-
-      state.items = state.items.map((item) => (item.category === oldName ? { ...item, category: cleanName } : item));
-      if (state.selectedCategory === oldName) state.selectedCategory = cleanName;
-      saveCategories();
-      if (!useSheetApi()) saveLocalItems();
-
-      render();
-      renderCategoryManager();
-
-      if (useSheetApi() && affectedItems.length > 0) {
-        setStatus("正在同步分類名稱到 Google 試算表...");
-        for (const item of affectedItems) {
-          await sheetPost("update", item);
+      function requestCloseCategoryModal() {
+        if (state.categoryDirty) {
+          openCategoryUnsavedModal();
+          return;
         }
-        setStatus("分類名稱已同步 Google 試算表。");
-      }
-    }
-
-    function deleteCategoryDraft(index) {
-      const categoryName = state.categoryDraft[index];
-      const isUsed = state.items.some((item) => item.category === categoryName);
-      if (isUsed) {
-        alert("這個分類已經有品項使用。請先改名，或把品項移到其他分類後再刪除。");
-        return;
+        closeCategoryModal();
       }
 
-      state.categoryDraft.splice(index, 1);
-      state.categoryDraft = normalizeCategories(state.categoryDraft);
-      state.categoryDirty = true;
-      setCategorySaveState("未儲存");
-      renderCategoryManager();
-    }
-
-    function handleCategoryAction(event) {
-      const button = event.target.closest("[data-category-action]");
-      if (!button) return;
-
-      if (button.dataset.categoryAction === "delete") {
-        deleteCategoryDraft(Number(button.dataset.categoryIndex));
-        return;
-      }
-    }
-
-    async function saveAllCategoryEdits(options = {}) {
-      const draftValues = getCategoryDraftFromInputs();
-      const trimmedValues = draftValues.map((value) => value.trim());
-      const duplicates = trimmedValues.filter((value, index) => value && trimmedValues.indexOf(value) !== index);
-      const nextCategories = normalizeCategories(trimmedValues);
-      const currentCategories = state.categoryOriginal || [];
-
-      if (trimmedValues.some((value) => !value)) {
-        setCategoryStatus("分類名稱不可空白。", true);
-        setCategorySaveState("儲存失敗", true);
-        return;
+      function closeCategoryModal() {
+        els.categoryModal.classList.remove("open");
+        els.newCategoryInput.value = "";
+        els.categoryStatus.textContent = "";
+        els.categoryStatus.classList.remove("error");
+        setCategorySaveState("未儲存");
+        state.categoryDraft = [];
+        state.categoryOriginal = [];
+        state.categoryDirty = false;
+        syncBodyScrollLock();
       }
 
-      if (duplicates.length > 0) {
-        setCategoryStatus(`分類名稱不可重複：${[...new Set(duplicates)].join("、")}`, true);
-        setCategorySaveState("儲存失敗", true);
-        return;
+      function openCategoryUnsavedModal() {
+        els.categoryUnsavedModal.classList.add("open");
+        resetDialogScroll(els.categoryUnsavedModal);
+        syncBodyScrollLock();
       }
 
-      for (const [oldIndex, oldName] of currentCategories.entries()) {
-        if (!nextCategories.includes(oldName)) {
-          const replacementName = trimmedValues[oldIndex];
-          const isRename = Boolean(replacementName) && replacementName !== oldName;
-          if (isRename) continue;
-
-          const isUsed = state.items.some((item) => item.category === oldName);
-          if (isUsed) {
-            setCategoryStatus(`「${oldName}」分類已經有品項使用。請改名，不要直接刪除。`, true);
-            setCategorySaveState("儲存失敗", true);
-            return;
-          }
-        }
+      function closeCategoryUnsavedModal() {
+        els.categoryUnsavedModal.classList.remove("open");
+        syncBodyScrollLock();
       }
 
-      state.savingMessage = "正在儲存";
-      state.isSaving = true;
-      setCategoryStatus("");
-      setCategorySaveState("儲存中");
-      setStatus("分類儲存中...");
-      render();
+      function discardCategoryChanges() {
+        closeCategoryUnsavedModal();
+        closeCategoryModal();
+      }
 
-      try {
-        const renamedItems = state.items
-          .map((item) => {
-            const oldIndex = currentCategories.indexOf(item.category);
-            const nextCategory = oldIndex >= 0 ? nextCategories[oldIndex] : item.category;
-            return nextCategory && nextCategory !== item.category ? { ...item, category: nextCategory } : item;
-          })
-          .filter((item) => {
-            const original = state.items.find((current) => current.id === item.id);
-            return original && original.category !== item.category;
-          });
+      async function saveAndCloseCategoryModal() {
+        closeCategoryUnsavedModal();
+        await saveAllCategoryEdits({ closeAfterSave: true });
+      }
 
-        state.items = state.items.map((item) => {
-          const oldIndex = currentCategories.indexOf(item.category);
-          const nextCategory = oldIndex >= 0 ? nextCategories[oldIndex] : item.category;
-          return nextCategory && nextCategory !== item.category ? { ...item, category: nextCategory } : item;
-        });
+      function openDeleteConfirm(item) {
+        state.pendingDeleteItemId = item.id;
+        els.deleteConfirmMessage.textContent = `確定要刪除「${item.name}」嗎？刪除後會同步移除試算表資料。`;
+        els.deleteConfirmModal.classList.add("open");
+        resetDialogScroll(els.deleteConfirmModal);
+        syncBodyScrollLock();
+      }
 
-        if (state.selectedCategory !== ALL_CATEGORY) {
-          const oldIndex = currentCategories.indexOf(state.selectedCategory);
-          if (oldIndex >= 0 && nextCategories[oldIndex]) state.selectedCategory = nextCategories[oldIndex];
-          if (!nextCategories.includes(state.selectedCategory)) state.selectedCategory = ALL_CATEGORY;
+      function closeDeleteConfirm() {
+        els.deleteConfirmModal.classList.remove("open");
+        state.pendingDeleteItemId = "";
+        syncBodyScrollLock();
+      }
+
+      function openImageViewer(src) {
+        els.imageViewerImg.src = src;
+        els.imageViewerModal.classList.add("open");
+        resetDialogScroll(els.imageViewerModal);
+        syncBodyScrollLock();
+      }
+
+      function closeImageViewer() {
+        els.imageViewerModal.classList.remove("open");
+        els.imageViewerImg.removeAttribute("src");
+        syncBodyScrollLock();
+      }
+
+      function addCategory() {
+        const name = els.newCategoryInput.value.trim();
+        if (!name || name === ALL_CATEGORY) return;
+
+        if (!state.categoryDraft.includes(name)) {
+          state.categoryDraft.push(name);
+          state.categoryDraft = normalizeCategories(state.categoryDraft);
+          state.categoryDirty = true;
+          setCategorySaveState("未儲存");
         }
 
-        state.categories = nextCategories;
+        els.newCategoryInput.value = "";
+        els.categoryStatus.textContent = "";
+        els.categoryStatus.classList.remove("error");
+        renderCategoryManager();
+      }
+
+      function setCategoryStatus(message, isError = false) {
+        els.categoryStatus.textContent = message;
+        els.categoryStatus.classList.toggle("error", isError);
+      }
+
+      function setCategorySaveState(message, isError = false) {
+        els.categorySaveState.textContent = message;
+        els.categorySaveState.classList.toggle("error", isError);
+      }
+
+      function getCategoryDraftFromInputs() {
+        const inputs = Array.from(els.categoryList.querySelectorAll(".category-row input[data-category-index]"));
+        return inputs.map((input) => input.value.trim());
+      }
+
+      async function renameCategory(oldName, newName) {
+        const cleanName = newName.trim();
+        if (!cleanName || cleanName === ALL_CATEGORY || cleanName === oldName) return;
+        if (getCategories().includes(cleanName)) {
+          alert("這個分類名稱已經存在。");
+          return;
+        }
+
+        state.categories = normalizeCategories(state.categories.map((category) => (category === oldName ? cleanName : category)));
+
+        const affectedItems = state.items.filter((item) => item.category === oldName).map((item) => ({ ...item, category: cleanName }));
+
+        state.items = state.items.map((item) => (item.category === oldName ? { ...item, category: cleanName } : item));
+        if (state.selectedCategory === oldName) state.selectedCategory = cleanName;
         saveCategories();
         if (!useSheetApi()) saveLocalItems();
 
-        if (useSheetApi() && renamedItems.length > 0) {
+        render();
+        renderCategoryManager();
+
+        if (useSheetApi() && affectedItems.length > 0) {
           setStatus("正在同步分類名稱到 Google 試算表...");
-          for (const item of renamedItems) {
+          for (const item of affectedItems) {
             await sheetPost("update", item);
           }
           setStatus("分類名稱已同步 Google 試算表。");
         }
-
-        state.categoryDraft = [...nextCategories];
-        state.categoryOriginal = [...nextCategories];
-        state.categoryDirty = false;
-        fillCategoryOptions();
-        renderCategoryManager();
-        setCategorySaveState("已儲存");
-        setStatus("分類已儲存。");
-        if (options.closeAfterSave) closeCategoryModal();
-      } finally {
-        state.isSaving = false;
-        render();
       }
-    }
 
-    async function handleSave(event) {
-      event.preventDefault();
-      const id = els.itemId.value || createId();
-      const item = {
-        id,
-        name: els.nameInput.value.trim(),
-        brand: els.brandInput.value.trim(),
-        category: els.categoryInput.value,
-        price: Number(els.priceInput.value) || 0,
-        quantity: Number(els.quantityInput.value) || 1,
-        platform: els.platformInput.value.trim(),
-        note: els.noteInput.value.trim(),
-        images: state.editingImages,
-      };
-
-      state.savingMessage = "正在儲存";
-      state.isSaving = true;
-      render();
-      try {
-        await persistItem(els.itemId.value ? "update" : "create", item);
-        closeModal();
-        if (els.detailModal.classList.contains("open")) {
-          openDetail(item);
+      function deleteCategoryDraft(index) {
+        const categoryName = state.categoryDraft[index];
+        const isUsed = state.items.some((item) => item.category === categoryName);
+        if (isUsed) {
+          alert("這個分類已經有品項使用。請先改名，或把品項移到其他分類後再刪除。");
+          return;
         }
-      } catch (error) {
-        setStatus(`儲存失敗：${error.message}`, true);
-      } finally {
-        state.isSaving = false;
-        render();
-      }
-    }
 
-    async function handleDetailSave(event) {
-      event.preventDefault();
-      const item = {
-        id: document.querySelector("#detailItemId").value,
-        name: document.querySelector("#detailNameInput").value.trim(),
-        brand: document.querySelector("#detailBrandInput").value.trim(),
-        category: document.querySelector("#detailCategoryInput").value,
-        price: Number(document.querySelector("#detailPriceInput").value) || 0,
-        quantity: Number(document.querySelector("#detailQuantityInput").value) || 1,
-        platform: document.querySelector("#detailPlatformInput").value.trim(),
-        note: document.querySelector("#detailNoteInput").value.trim(),
-        images: state.editingImages,
-      };
-
-      state.savingMessage = "正在儲存";
-      state.isSaving = true;
-      render();
-      try {
-        await persistItem("update", item);
-        state.detailMode = "view";
-        openDetail(item);
-      } catch (error) {
-        setStatus(`儲存失敗：${error.message}`, true);
-      } finally {
-        state.isSaving = false;
-        render();
-      }
-    }
-
-    async function handleItemAction(event) {
-      const target = event.target.closest("[data-action]");
-      if (!target) return;
-
-      const item = state.items.find((current) => current.id === target.dataset.id);
-      if (!item) return;
-
-      if (target.dataset.action === "detail") {
-        openDetail(item);
-        return;
-      }
-    }
-
-    async function handleDetailAction(event) {
-      const button = event.target.closest("[data-detail-action]");
-      if (!button) return;
-
-      const item = state.items.find((current) => current.id === state.selectedItemId);
-      if (!item) return;
-
-      if (button.dataset.detailAction === "edit") {
-        state.detailMode = "edit";
-        renderDetail(item);
-        return;
+        state.categoryDraft.splice(index, 1);
+        state.categoryDraft = normalizeCategories(state.categoryDraft);
+        state.categoryDirty = true;
+        setCategorySaveState("未儲存");
+        renderCategoryManager();
       }
 
-      if (button.dataset.detailAction === "back") {
-        state.detailMode = "view";
-        renderDetail(item);
-        return;
+      function handleCategoryAction(event) {
+        const button = event.target.closest("[data-category-action]");
+        if (!button) return;
+
+        if (button.dataset.categoryAction === "delete") {
+          deleteCategoryDraft(Number(button.dataset.categoryIndex));
+          return;
+        }
       }
 
-      if (button.dataset.detailAction === "delete") {
-        openDeleteConfirm(item);
-        return;
-      }
-    }
+      async function saveAllCategoryEdits(options = {}) {
+        const draftValues = getCategoryDraftFromInputs();
+        const trimmedValues = draftValues.map((value) => value.trim());
+        const duplicates = trimmedValues.filter((value, index) => value && trimmedValues.indexOf(value) !== index);
+        const nextCategories = normalizeCategories(trimmedValues);
+        const currentCategories = state.categoryOriginal || [];
 
-    async function confirmDeleteSelectedItem() {
-      const item = state.items.find((current) => current.id === state.pendingDeleteItemId);
-      if (!item) {
-        closeDeleteConfirm();
-        return;
-      }
+        if (trimmedValues.some((value) => !value)) {
+          setCategoryStatus("分類名稱不可空白。", true);
+          setCategorySaveState("儲存失敗", true);
+          return;
+        }
 
-      state.savingMessage = "正在刪除";
-      state.isSaving = true;
-      render();
-      try {
-        await persistItem("delete", item);
-        closeDeleteConfirm();
-        closeDetail();
-      } catch (error) {
-        setStatus(`刪除失敗：${error.message}`, true);
-      } finally {
-        state.isSaving = false;
+        if (duplicates.length > 0) {
+          setCategoryStatus(`分類名稱不可重複：${[...new Set(duplicates)].join("、")}`, true);
+          setCategorySaveState("儲存失敗", true);
+          return;
+        }
+
+        for (const [oldIndex, oldName] of currentCategories.entries()) {
+          if (!nextCategories.includes(oldName)) {
+            const replacementName = trimmedValues[oldIndex];
+            const isRename = Boolean(replacementName) && replacementName !== oldName;
+            if (isRename) continue;
+
+            const isUsed = state.items.some((item) => item.category === oldName);
+            if (isUsed) {
+              setCategoryStatus(`「${oldName}」分類已經有品項使用。請改名，不要直接刪除。`, true);
+              setCategorySaveState("儲存失敗", true);
+              return;
+            }
+          }
+        }
+
         state.savingMessage = "正在儲存";
+        state.isSaving = true;
+        setCategoryStatus("");
+        setCategorySaveState("儲存中");
+        setStatus("分類儲存中...");
         render();
-      }
-    }
 
-    fillCategoryOptions();
-    render();
-    loadItems();
+        try {
+          const renamedItems = state.items
+            .map((item) => {
+              const oldIndex = currentCategories.indexOf(item.category);
+              const nextCategory = oldIndex >= 0 ? nextCategories[oldIndex] : item.category;
+              return nextCategory && nextCategory !== item.category ? { ...item, category: nextCategory } : item;
+            })
+            .filter((item) => {
+              const original = state.items.find((current) => current.id === item.id);
+              return original && original.category !== item.category;
+            });
 
-    els.categoryBar.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-category]");
-      if (!button) return;
-      state.selectedCategory = button.dataset.category;
-      state.currentPage = 1;
-      render();
-    });
+          state.items = state.items.map((item) => {
+            const oldIndex = currentCategories.indexOf(item.category);
+            const nextCategory = oldIndex >= 0 ? nextCategories[oldIndex] : item.category;
+            return nextCategory && nextCategory !== item.category ? { ...item, category: nextCategory } : item;
+          });
 
-    els.searchInput.addEventListener("input", (event) => {
-      state.searchQuery = event.target.value;
-      state.currentPage = 1;
-      render();
-    });
+          if (state.selectedCategory !== ALL_CATEGORY) {
+            const oldIndex = currentCategories.indexOf(state.selectedCategory);
+            if (oldIndex >= 0 && nextCategories[oldIndex]) state.selectedCategory = nextCategories[oldIndex];
+            if (!nextCategories.includes(state.selectedCategory)) state.selectedCategory = ALL_CATEGORY;
+          }
 
-    els.pagination.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-page]");
-      if (!button || button.disabled) return;
-      state.currentPage = Number(button.dataset.page);
-      render();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
+          state.categories = nextCategories;
+          saveCategories();
+          if (!useSheetApi()) saveLocalItems();
 
-    els.gridButton.addEventListener("click", () => {
-      state.viewMode = "grid";
-      render();
-    });
+          if (useSheetApi() && renamedItems.length > 0) {
+            setStatus("正在同步分類名稱到 Google 試算表...");
+            for (const item of renamedItems) {
+              await sheetPost("update", item);
+            }
+            setStatus("分類名稱已同步 Google 試算表。");
+          }
 
-    els.listButton.addEventListener("click", () => {
-      state.viewMode = "list";
-      render();
-    });
-
-    els.addButton.addEventListener("click", () => openModal());
-    els.categoryManageButton.addEventListener("click", openCategoryModal);
-    els.closeButton.addEventListener("click", closeModal);
-    els.categoryCloseButton.addEventListener("click", requestCloseCategoryModal);
-    els.saveCategoriesButton.addEventListener("click", saveAllCategoryEdits);
-    els.categoryUnsavedCancelXButton.addEventListener("click", closeCategoryUnsavedModal);
-    els.categoryUnsavedDiscardButton.addEventListener("click", discardCategoryChanges);
-    els.categoryUnsavedSaveButton.addEventListener("click", saveAndCloseCategoryModal);
-    els.deleteCancelXButton.addEventListener("click", closeDeleteConfirm);
-    els.deleteCancelButton.addEventListener("click", closeDeleteConfirm);
-    els.deleteConfirmButton.addEventListener("click", confirmDeleteSelectedItem);
-    els.addCategoryButton.addEventListener("click", addCategory);
-    els.newCategoryInput.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") addCategory();
-    });
-    els.categoryList.addEventListener("click", handleCategoryAction);
-    els.categoryList.addEventListener("input", (event) => {
-      const input = event.target.closest("[data-category-index]");
-      if (!input) return;
-      state.categoryDraft[Number(input.dataset.categoryIndex)] = input.value;
-      state.categoryDirty = true;
-      setCategorySaveState("未儲存");
-    });
-    els.form.addEventListener("submit", handleSave);
-    els.imageInput.addEventListener("change", async (event) => {
-      const files = Array.from(event.target.files || []);
-      if (!files.length) return;
-
-      try {
-        const images = await Promise.all(files.map(readImageFile));
-        state.editingImages = [...state.editingImages, ...images];
-        renderImagePreview();
-      } catch (error) {
-        setStatus(error.message, true);
-      }
-    });
-    els.imagePreview.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-image-remove]");
-      if (button) {
-        state.editingImages.splice(Number(button.dataset.imageRemove), 1);
-        renderImagePreview();
-        return;
+          state.categoryDraft = [...nextCategories];
+          state.categoryOriginal = [...nextCategories];
+          state.categoryDirty = false;
+          fillCategoryOptions();
+          renderCategoryManager();
+          setCategorySaveState("已儲存");
+          setStatus("分類已儲存。");
+          if (options.closeAfterSave) closeCategoryModal();
+        } finally {
+          state.isSaving = false;
+          render();
+        }
       }
 
-      const image = event.target.closest("[data-image-view]");
-      if (image) openImageViewer(state.editingImages[Number(image.dataset.imageView)]);
-    });
-    els.gridView.addEventListener("click", handleItemAction);
-    els.listView.addEventListener("click", handleItemAction);
-    els.gridView.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter") return;
-      handleItemAction(event);
-    });
-    els.listView.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter") return;
-      handleItemAction(event);
-    });
-    els.detailBody.addEventListener("click", handleDetailAction);
-    els.detailBody.addEventListener("submit", handleDetailSave);
-    els.detailBody.addEventListener("change", async (event) => {
-      if (event.target.id !== "detailImageInput") return;
-      const files = Array.from(event.target.files || []);
-      if (!files.length) return;
+      async function handleSave(event) {
+        event.preventDefault();
+        const id = els.itemId.value || createId();
+        const item = {
+          id,
+          name: els.nameInput.value.trim(),
+          brand: els.brandInput.value.trim(),
+          category: els.categoryInput.value,
+          price: Number(els.priceInput.value) || 0,
+          rating: normalizeRating(els.ratingInput.value),
+          quantity: Number(els.quantityInput.value) || 1,
+          platform: els.platformInput.value.trim(),
+          note: els.noteInput.value.trim(),
+          images: state.editingImages,
+        };
 
-      try {
-        const images = await Promise.all(files.map(readImageFile));
-        state.editingImages = [...state.editingImages, ...images];
-        const preview = document.querySelector("#detailImagePreview");
-        if (preview) preview.innerHTML = renderImagePreviewMarkup();
-      } catch (error) {
-        setStatus(error.message, true);
-      }
-    });
-    els.detailBody.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-image-remove]");
-      if (button && state.detailMode === "edit") {
-        state.editingImages.splice(Number(button.dataset.imageRemove), 1);
-        const preview = document.querySelector("#detailImagePreview");
-        if (preview) preview.innerHTML = renderImagePreviewMarkup();
-        return;
+        state.savingMessage = "正在儲存";
+        state.isSaving = true;
+        render();
+        try {
+          await persistItem(els.itemId.value ? "update" : "create", item);
+          closeModal();
+          if (els.detailModal.classList.contains("open")) {
+            openDetail(item);
+          }
+        } catch (error) {
+          setStatus(`儲存失敗：${error.message}`, true);
+        } finally {
+          state.isSaving = false;
+          render();
+        }
       }
 
-      const image = event.target.closest("[data-image-view]");
-      if (image && state.detailMode === "edit") {
-        openImageViewer(state.editingImages[Number(image.dataset.imageView)]);
-        return;
+      async function handleDetailSave(event) {
+        event.preventDefault();
+        const item = {
+          id: document.querySelector("#detailItemId").value,
+          name: document.querySelector("#detailNameInput").value.trim(),
+          brand: document.querySelector("#detailBrandInput").value.trim(),
+          category: document.querySelector("#detailCategoryInput").value,
+          price: Number(document.querySelector("#detailPriceInput").value) || 0,
+          rating: normalizeRating(document.querySelector("#detailRatingInput").value),
+          quantity: Number(document.querySelector("#detailQuantityInput").value) || 1,
+          platform: document.querySelector("#detailPlatformInput").value.trim(),
+          note: document.querySelector("#detailNoteInput").value.trim(),
+          images: state.editingImages,
+        };
+
+        state.savingMessage = "正在儲存";
+        state.isSaving = true;
+        render();
+        try {
+          await persistItem("update", item);
+          state.detailMode = "view";
+          openDetail(item);
+        } catch (error) {
+          setStatus(`儲存失敗：${error.message}`, true);
+        } finally {
+          state.isSaving = false;
+          render();
+        }
       }
 
-      const detailImage = event.target.closest("[data-detail-image-view]");
-      if (detailImage && state.detailMode === "view") {
+      async function handleItemAction(event) {
+        const target = event.target.closest("[data-action]");
+        if (!target) return;
+
+        const item = state.items.find((current) => current.id === target.dataset.id);
+        if (!item) return;
+
+        if (target.dataset.action === "detail") {
+          openDetail(item);
+          return;
+        }
+      }
+
+      async function handleDetailAction(event) {
+        const button = event.target.closest("[data-detail-action]");
+        if (!button) return;
+
         const item = state.items.find((current) => current.id === state.selectedItemId);
         if (!item) return;
-        openImageViewer(itemImages(item)[Number(detailImage.dataset.detailImageView)]);
-      }
-    });
-    els.detailCloseButton.addEventListener("click", closeDetail);
-    els.imageViewerCloseButton.addEventListener("click", closeImageViewer);
-    els.modal.addEventListener("click", (event) => {
-      if (event.target === els.modal) closeModal();
-    });
-    els.detailModal.addEventListener("click", (event) => {
-      if (event.target === els.detailModal) closeDetail();
-    });
-    els.categoryModal.addEventListener("click", (event) => {
-      if (event.target === els.categoryModal) requestCloseCategoryModal();
-    });
-    els.deleteConfirmModal.addEventListener("click", (event) => {
-      if (event.target === els.deleteConfirmModal) closeDeleteConfirm();
-    });
-    els.categoryUnsavedModal.addEventListener("click", (event) => {
-      if (event.target === els.categoryUnsavedModal) closeCategoryUnsavedModal();
-    });
-    els.imageViewerModal.addEventListener("click", (event) => {
-      if (event.target === els.imageViewerModal) closeImageViewer();
-    });
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        closeModal();
-        closeDetail();
-        requestCloseCategoryModal();
-        closeDeleteConfirm();
-        closeCategoryUnsavedModal();
-        closeImageViewer();
-      }
-    });
-  </script>
-</body>
 
+        if (button.dataset.detailAction === "edit") {
+          state.detailMode = "edit";
+          renderDetail(item);
+          return;
+        }
+
+        if (button.dataset.detailAction === "back") {
+          state.detailMode = "view";
+          renderDetail(item);
+          return;
+        }
+
+        if (button.dataset.detailAction === "delete") {
+          openDeleteConfirm(item);
+          return;
+        }
+      }
+
+      async function confirmDeleteSelectedItem() {
+        const item = state.items.find((current) => current.id === state.pendingDeleteItemId);
+        if (!item) {
+          closeDeleteConfirm();
+          return;
+        }
+
+        state.savingMessage = "正在刪除";
+        state.isSaving = true;
+        render();
+        try {
+          await persistItem("delete", item);
+          closeDeleteConfirm();
+          closeDetail();
+        } catch (error) {
+          setStatus(`刪除失敗：${error.message}`, true);
+        } finally {
+          state.isSaving = false;
+          state.savingMessage = "正在儲存";
+          render();
+        }
+      }
+
+      fillCategoryOptions();
+      render();
+      loadItems();
+
+      els.categoryBar.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-category]");
+        if (!button) return;
+        state.selectedCategory = button.dataset.category;
+        render();
+      });
+
+      els.filterToggleButton.addEventListener("click", () => {
+        const isOpen = els.categoryNavRow.classList.toggle("open");
+        els.filterToggleButton.classList.toggle("active", isOpen);
+        els.filterToggleButton.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      els.searchInput.addEventListener("input", (event) => {
+        state.searchQuery = event.target.value;
+        render();
+      });
+
+      els.scrollTopButton.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      window.addEventListener("scroll", () => {
+        els.scrollTopButton.classList.toggle("visible", window.scrollY > 240);
+      });
+
+      els.gridButton.addEventListener("click", () => {
+        state.viewMode = "grid";
+        render();
+      });
+
+      els.listButton.addEventListener("click", () => {
+        state.viewMode = "list";
+        render();
+      });
+
+      els.addButton.addEventListener("click", () => openModal());
+      els.categoryManageButton.addEventListener("click", openCategoryModal);
+      els.closeButton.addEventListener("click", closeModal);
+      els.categoryCloseButton.addEventListener("click", requestCloseCategoryModal);
+      els.saveCategoriesButton.addEventListener("click", saveAllCategoryEdits);
+      els.categoryUnsavedCancelXButton.addEventListener("click", closeCategoryUnsavedModal);
+      els.categoryUnsavedDiscardButton.addEventListener("click", discardCategoryChanges);
+      els.categoryUnsavedSaveButton.addEventListener("click", saveAndCloseCategoryModal);
+      els.deleteCancelXButton.addEventListener("click", closeDeleteConfirm);
+      els.deleteCancelButton.addEventListener("click", closeDeleteConfirm);
+      els.deleteConfirmButton.addEventListener("click", confirmDeleteSelectedItem);
+      els.addCategoryButton.addEventListener("click", addCategory);
+      els.newCategoryInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") addCategory();
+      });
+      els.categoryList.addEventListener("click", handleCategoryAction);
+      els.categoryList.addEventListener("input", (event) => {
+        const input = event.target.closest("[data-category-index]");
+        if (!input) return;
+        state.categoryDraft[Number(input.dataset.categoryIndex)] = input.value;
+        state.categoryDirty = true;
+        setCategorySaveState("未儲存");
+      });
+      els.form.addEventListener("submit", handleSave);
+      els.imageInput.addEventListener("change", async (event) => {
+        const files = Array.from(event.target.files || []);
+        if (!files.length) return;
+
+        try {
+          const images = await Promise.all(files.map(readImageFile));
+          state.editingImages = [...state.editingImages, ...images];
+          renderImagePreview();
+        } catch (error) {
+          setStatus(error.message, true);
+        }
+      });
+      els.imagePreview.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-image-remove]");
+        if (button) {
+          state.editingImages.splice(Number(button.dataset.imageRemove), 1);
+          renderImagePreview();
+          return;
+        }
+
+        const image = event.target.closest("[data-image-view]");
+        if (image) openImageViewer(state.editingImages[Number(image.dataset.imageView)]);
+      });
+      els.gridView.addEventListener("click", handleItemAction);
+      els.listView.addEventListener("click", handleItemAction);
+      els.gridView.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter") return;
+        handleItemAction(event);
+      });
+      els.listView.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter") return;
+        handleItemAction(event);
+      });
+      els.detailBody.addEventListener("click", handleDetailAction);
+      els.detailBody.addEventListener("submit", handleDetailSave);
+      els.detailBody.addEventListener("change", async (event) => {
+        if (event.target.id !== "detailImageInput") return;
+        const files = Array.from(event.target.files || []);
+        if (!files.length) return;
+
+        try {
+          const images = await Promise.all(files.map(readImageFile));
+          state.editingImages = [...state.editingImages, ...images];
+          const preview = document.querySelector("#detailImagePreview");
+          if (preview) preview.innerHTML = renderImagePreviewMarkup();
+        } catch (error) {
+          setStatus(error.message, true);
+        }
+      });
+      els.detailBody.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-image-remove]");
+        if (button && state.detailMode === "edit") {
+          state.editingImages.splice(Number(button.dataset.imageRemove), 1);
+          const preview = document.querySelector("#detailImagePreview");
+          if (preview) preview.innerHTML = renderImagePreviewMarkup();
+          return;
+        }
+
+        const image = event.target.closest("[data-image-view]");
+        if (image && state.detailMode === "edit") {
+          openImageViewer(state.editingImages[Number(image.dataset.imageView)]);
+          return;
+        }
+
+        const detailImage = event.target.closest("[data-detail-image-view]");
+        if (detailImage && state.detailMode === "view") {
+          const item = state.items.find((current) => current.id === state.selectedItemId);
+          if (!item) return;
+          openImageViewer(itemImages(item)[Number(detailImage.dataset.detailImageView)]);
+        }
+      });
+      els.detailCloseButton.addEventListener("click", closeDetail);
+      els.imageViewerCloseButton.addEventListener("click", closeImageViewer);
+      els.modal.addEventListener("click", (event) => {
+        if (event.target === els.modal) closeModal();
+      });
+      els.detailModal.addEventListener("click", (event) => {
+        if (event.target === els.detailModal) closeDetail();
+      });
+      els.categoryModal.addEventListener("click", (event) => {
+        if (event.target === els.categoryModal) requestCloseCategoryModal();
+      });
+      els.deleteConfirmModal.addEventListener("click", (event) => {
+        if (event.target === els.deleteConfirmModal) closeDeleteConfirm();
+      });
+      els.categoryUnsavedModal.addEventListener("click", (event) => {
+        if (event.target === els.categoryUnsavedModal) closeCategoryUnsavedModal();
+      });
+      els.imageViewerModal.addEventListener("click", (event) => {
+        if (event.target === els.imageViewerModal) closeImageViewer();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeModal();
+          closeDetail();
+          requestCloseCategoryModal();
+          closeDeleteConfirm();
+          closeCategoryUnsavedModal();
+          closeImageViewer();
+        }
+      });
+    </script>
+  </body>
 </html>
