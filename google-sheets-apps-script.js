@@ -1,9 +1,24 @@
 // 貼到「綁定這份試算表」的 Apps Script。
 // 這版會使用第一個工作表，並支援你現有的欄位：
-// 分類、品名色號、單價、評價、量、狀態、賣出金額、總、購買平台、備註
+// 分類、品名色號、單價、評價、量、狀態、賣出金額、總、購買平台、備註、回購、優點、缺點、詳細評論
 
 const SHEET_NAME = ""; // 留空代表使用第一個工作表；若要指定工作表名稱可填在這裡。
-const REQUIRED_HEADERS = ["分類", "品名色號", "單價", "評價", "量", "狀態", "賣出金額", "總", "購買平台", "備註"];
+const REQUIRED_HEADERS = [
+  "分類",
+  "品名色號",
+  "單價",
+  "評價",
+  "量",
+  "狀態",
+  "賣出金額",
+  "總",
+  "購買平台",
+  "回購",
+  "優點",
+  "缺點",
+  "詳細評論",
+  "備註",
+];
 const SYSTEM_HEADERS = ["id", "brand", "images", "createdAt", "updatedAt"];
 
 function doGet(e) {
@@ -121,6 +136,10 @@ function rowToItem(row, headerMap) {
     saleAmount: parseMoney(cell(row, headerMap, "賣出金額")),
     platform: cell(row, headerMap, "購買平台"),
     note: cell(row, headerMap, "備註"),
+    repurchase: cell(row, headerMap, "回購"),
+    pros: cell(row, headerMap, "優點"),
+    cons: cell(row, headerMap, "缺點"),
+    review: cell(row, headerMap, "詳細評論"),
     images: parseImages(cell(row, headerMap, "images")),
     createdAt: cell(row, headerMap, "createdAt"),
     updatedAt: cell(row, headerMap, "updatedAt"),
@@ -215,6 +234,10 @@ function writeItem(sheet, rowNumber, item, previous) {
   setByHeader(sheet, rowNumber, headerMap, "總", total);
   setByHeader(sheet, rowNumber, headerMap, "購買平台", item.platform || "");
   setByHeader(sheet, rowNumber, headerMap, "備註", item.note || "");
+  setByHeader(sheet, rowNumber, headerMap, "回購", item.repurchase || "");
+  setByHeader(sheet, rowNumber, headerMap, "優點", item.pros || "");
+  setByHeader(sheet, rowNumber, headerMap, "缺點", item.cons || "");
+  setByHeader(sheet, rowNumber, headerMap, "詳細評論", item.review || "");
   setByHeader(sheet, rowNumber, headerMap, "id", item.id);
   setByHeader(sheet, rowNumber, headerMap, "brand", item.brand || "");
   setByHeader(sheet, rowNumber, headerMap, "images", JSON.stringify(parseImages(item.images)));

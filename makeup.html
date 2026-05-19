@@ -57,8 +57,10 @@
 
       .header-inner,
       .page {
-        width: min(1180px, calc(100% - 32px));
+        /* width: min(1180px, calc(100% - 32px)); */
+        width: 100%;
         margin: 0 auto;
+        padding: 0 15px;
       }
 
       .header-main {
@@ -66,7 +68,7 @@
         flex-wrap: wrap;
         gap: 14px;
         align-items: center;
-        padding: 18px 0 12px;
+        padding: 15px 0 12px;
       }
 
       .title {
@@ -289,7 +291,7 @@
       }
 
       .page {
-        padding: 15px 0 20px;
+        padding: 15px 15px 20px;
       }
 
       .status {
@@ -706,6 +708,15 @@
         line-height: 1.45;
       }
 
+      .note-row + .note-row {
+        margin-top: 4px;
+      }
+
+      .note-label {
+        color: var(--primary-dark);
+        font-weight: 700;
+      }
+
       .table-wrap {
         max-height: calc(100vh - 233px);
         overflow: auto;
@@ -716,12 +727,12 @@
 
       .table-wrap .note {
         padding: 0;
-        background-color: #fff;
+        background-color: transparent;
       }
 
       table {
         width: 100%;
-        min-width: 1040px;
+        min-width: 1460px;
         border-collapse: collapse;
         text-align: left;
       }
@@ -929,7 +940,8 @@
       }
 
       .field textarea {
-        min-height: 92px;
+        /* min-height: 92px; */
+            max-height: 42px;
         resize: vertical;
       }
 
@@ -958,7 +970,7 @@
           margin-left: auto;
         }
         .page {
-          padding: 15px 0 17px;
+          padding: 15px 15px 17px;
         }
         .search-box {
           order: 3;
@@ -1169,7 +1181,7 @@
                 <input id="quantityInput" type="number" min="1" inputmode="numeric" />
               </div>
               <div class="field">
-                <label for="priceInput">價格</label>
+                <label for="priceInput">單價</label>
                 <input id="priceInput" type="text" min="0" inputmode="numeric" />
               </div>
               <div class="field conditional-hidden" id="saleAmountField" hidden>
@@ -1184,6 +1196,27 @@
               <div class="field">
                 <label for="platformInput">購買平台</label>
                 <input id="platformInput" />
+              </div>
+              <div class="field">
+                <label for="repurchaseInput">回購</label>
+                <select id="repurchaseInput">
+                  <option value="">未填</option>
+                  <option value="會">會</option>
+                  <option value="也許">也許</option>
+                  <option value="否">否</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="prosInput">優點</label>
+                <textarea id="prosInput"></textarea>
+              </div>
+              <div class="field">
+                <label for="consInput">缺點</label>
+                <textarea id="consInput"></textarea>
+              </div>
+              <div class="field full">
+                <label for="reviewInput">詳細評論</label>
+                <textarea id="reviewInput"></textarea>
               </div>
               <div class="field full">
                 <label for="noteInput">備註</label>
@@ -1412,6 +1445,10 @@
         saleAmountInput: document.querySelector("#saleAmountInput"),
         platformInput: document.querySelector("#platformInput"),
         noteInput: document.querySelector("#noteInput"),
+        repurchaseInput: document.querySelector("#repurchaseInput"),
+        prosInput: document.querySelector("#prosInput"),
+        consInput: document.querySelector("#consInput"),
+        reviewInput: document.querySelector("#reviewInput"),
         imageInput: document.querySelector("#imageInput"),
         imagePreview: document.querySelector("#imagePreview"),
         detailModal: document.querySelector("#detailModal"),
@@ -1598,6 +1635,24 @@
           .replaceAll("'", "&#039;");
       }
 
+      function itemNotes(item) {
+        return [
+          ["回購", item.repurchase],
+          ["優點", item.pros],
+          ["缺點", item.cons],
+          ["詳細評論", item.review],
+          ["備註", item.note],
+        ].filter(([, value]) => String(value || "").trim());
+      }
+
+      function renderNoteMarkup(item, emptyText = "") {
+        const notes = itemNotes(item);
+        if (!notes.length) return emptyText;
+        return `<div class="note">${notes
+          .map(([label, value]) => `<div class="note-row"><span class="note-label">${escapeHtml(label)}：</span>${escapeHtml(value)}</div>`)
+          .join("")}</div>`;
+      }
+
       function money(value) {
         return Number(value || 0).toLocaleString("zh-TW");
       }
@@ -1756,6 +1811,27 @@
              
               
                 
+                <div class="field">
+                  <label for="detailRepurchaseInput">回購</label>
+                  <select id="detailRepurchaseInput">
+                    <option value="" ${item.repurchase ? "" : "selected"}>未填</option>
+                    <option value="會" ${item.repurchase === "會" ? "selected" : ""}>會</option>
+                    <option value="也許" ${item.repurchase === "也許" ? "selected" : ""}>也許</option>
+                    <option value="否" ${item.repurchase === "否" ? "selected" : ""}>否</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="detailProsInput">優點</label>
+                  <textarea id="detailProsInput">${escapeHtml(item.pros || "")}</textarea>
+                </div>
+                <div class="field">
+                  <label for="detailConsInput">缺點</label>
+                  <textarea id="detailConsInput">${escapeHtml(item.cons || "")}</textarea>
+                </div>
+                <div class="field full">
+                  <label for="detailReviewInput">詳細評論</label>
+                  <textarea id="detailReviewInput">${escapeHtml(item.review || "")}</textarea>
+                </div>
                 <div class="field full">
                   <label for="detailNoteInput">備註</label>
                   <textarea id="detailNoteInput">${escapeHtml(item.note || "")}</textarea>
@@ -1802,7 +1878,11 @@
         const keyword = state.searchQuery.trim().toLowerCase();
         return state.items.filter((item) => {
           const matchCategory = state.selectedCategory === ALL_CATEGORY || item.category === state.selectedCategory;
-          const matchKeyword = !keyword || `${item.name} ${item.brand}`.toLowerCase().includes(keyword);
+          const matchKeyword =
+            !keyword ||
+            `${item.name} ${item.brand} ${item.note || ""} ${item.repurchase || ""} ${item.pros || ""} ${item.cons || ""} ${item.review || ""}`
+              .toLowerCase()
+              .includes(keyword);
           return matchCategory && matchKeyword;
         });
       }
@@ -1859,7 +1939,7 @@
                     <div class="meta-chip">數量：${escapeHtml(item.quantity || 1)}</div>
                     <div class="meta-chip meta-shop">${escapeHtml(platformMerchant(item.platform))}</div>
                   </div>
-                  ${item.note ? `<div class="note">${escapeHtml(item.note)}</div>` : ""}
+                  ${renderNoteMarkup(item)}
                 </div>
               </article>
             `,
@@ -1878,6 +1958,10 @@
                 <th style="width: 55px;">數量</th>
                 <th>總價</th>
                 <th>購買平台</th>
+                <th style="width: 60px;">回購</th>
+                <th style="width: 130px;">優點</th>
+                <th style="width: 130x;">缺點</th>
+                <th style="width: 130px;">詳細評論</th>
                 <th>備註</th>
               </tr>
             </thead>
@@ -1897,6 +1981,10 @@
                       <td>${escapeHtml(item.quantity || 1)}</td>
                       <td>$${money(itemFinalTotal(item))}</td>
                       <td>${escapeHtml(platformMerchant(item.platform))}</td>
+                      <td>${item.repurchase ? escapeHtml(item.repurchase) : "未填"}</td>
+                      <td>${item.pros ? escapeHtml(item.pros) : "未填"}</td>
+                      <td>${item.cons ? escapeHtml(item.cons) : "未填"}</td>
+                      <td>${item.review ? escapeHtml(item.review) : "未填"}</td>
                       <td>${item.note ? `<span class="note">${escapeHtml(item.note)}</span>` : "未填備註"}</td>
                     </tr>
                   `,
@@ -2029,6 +2117,22 @@
                 <label>購買平台</label>
                 <div class="detail-value">${escapeHtml(platformMerchant(item.platform))}</div>
               </div>
+              <div class="field">
+                <label>回購</label>
+                <div class="detail-value">${item.repurchase ? escapeHtml(item.repurchase) : "未填"}</div>
+              </div>
+              <div class="field">
+                <label>優點</label>
+                <div class="detail-value">${item.pros ? escapeHtml(item.pros) : "未填"}</div>
+              </div>
+              <div class="field">
+                <label>缺點</label>
+                <div class="detail-value">${item.cons ? escapeHtml(item.cons) : "未填"}</div>
+              </div>
+              <div class="field full">
+                <label>詳細評論</label>
+                <div class="detail-value">${item.review ? escapeHtml(item.review) : "未填"}</div>
+              </div>
               <div class="field full">
                 <label>備註</label>
                 <div class="detail-value">${item.note ? escapeHtml(item.note) : "未填備註"}</div>
@@ -2078,6 +2182,10 @@
         toggleSaleAmountField(els.soldInput, els.saleAmountField, els.saleAmountInput);
         els.platformInput.value = item?.platform || "";
         els.noteInput.value = item?.note || "";
+        els.repurchaseInput.value = item?.repurchase || "";
+        els.prosInput.value = item?.pros || "";
+        els.consInput.value = item?.cons || "";
+        els.reviewInput.value = item?.review || "";
         state.editingImages = itemImages(item);
         els.imageInput.value = "";
         renderImagePreview();
@@ -2405,6 +2513,10 @@
           saleAmount: els.soldInput.value === "已賣出" ? Number(els.saleAmountInput.value) || 0 : 0,
           platform: els.platformInput.value.trim(),
           note: els.noteInput.value.trim(),
+          repurchase: els.repurchaseInput.value.trim(),
+          pros: els.prosInput.value.trim(),
+          cons: els.consInput.value.trim(),
+          review: els.reviewInput.value.trim(),
           images: state.editingImages,
         };
 
@@ -2440,6 +2552,10 @@
             document.querySelector("#detailSoldInput").value === "已賣出" ? Number(document.querySelector("#detailSaleAmountInput").value) || 0 : 0,
           platform: document.querySelector("#detailPlatformInput").value.trim(),
           note: document.querySelector("#detailNoteInput").value.trim(),
+          repurchase: document.querySelector("#detailRepurchaseInput").value.trim(),
+          pros: document.querySelector("#detailProsInput").value.trim(),
+          cons: document.querySelector("#detailConsInput").value.trim(),
+          review: document.querySelector("#detailReviewInput").value.trim(),
           images: state.editingImages,
         };
 
