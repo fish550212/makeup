@@ -1876,11 +1876,14 @@
 
       function filteredItems() {
         const keyword = state.searchQuery.trim().toLowerCase();
+        const searchableFields = ["name", "brand", "note", "pros", "cons", "review", "repurchase"];
         return state.items.filter((item) => {
           const matchCategory = state.selectedCategory === ALL_CATEGORY || item.category === state.selectedCategory;
           const matchKeyword =
             !keyword ||
-            `${item.name} ${item.brand} ${item.note || ""} ${item.repurchase || ""} ${item.pros || ""} ${item.cons || ""} ${item.review || ""}`
+            searchableFields
+              .map((field) => item[field] || "")
+              .join(" ")
               .toLowerCase()
               .includes(keyword);
           return matchCategory && matchKeyword;
