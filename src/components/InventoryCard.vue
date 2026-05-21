@@ -1,7 +1,7 @@
 <script setup>
 import RatingStars from "./RatingStars.vue";
 import { money } from "../utils/format.js";
-import { isSold, itemImages, itemNotes, platformMerchant } from "../utils/item.js";
+import { isSold, itemImages, itemNotes, itemQuantity, platformMerchant } from "../utils/item.js";
 
 defineProps({
   item: {
@@ -48,7 +48,7 @@ const emit = defineEmits(["select"]);
 
     <div class="meta">
       <div class="meta-pair">
-        <div class="meta-chip">數量：{{ item.quantity || 1 }}</div>
+        <div class="meta-chip">數量：{{ itemQuantity(item) }}</div>
         <div class="meta-chip meta-shop">{{ platformMerchant(item.platform) }}</div>
       </div>
 

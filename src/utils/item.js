@@ -8,12 +8,18 @@ export function normalizeRating(value) {
   return Math.min(5, Math.max(0, Math.round(Number(value) || 0)));
 }
 
+export function itemQuantity(item) {
+  if (item?.quantity === "" || item?.quantity === null || item?.quantity === undefined) return 0;
+  return Math.max(0, Number(item.quantity) || 0);
+}
+
 export function isSold(item) {
   return item?.sold === true || String(item?.sold || "").trim() === "已賣出";
 }
 
 export function itemSubtotal(item) {
-  return (Number(item.price) || 0) * (Number(item.quantity) || 1);
+  const price = Number(item.price) || 0;
+  return price * itemQuantity(item);
 }
 
 export function itemSaleAmount(item) {
@@ -58,7 +64,7 @@ export function toEditableItem(item, fallbackCategory) {
     category: item?.category || fallbackCategory,
     price: Number(item?.price) || 0,
     rating: normalizeRating(item?.rating),
-    quantity: Number(item?.quantity) || 1,
+    quantity: itemQuantity(item),
     sold: isSold(item),
     saleAmount: Number(item?.saleAmount) || 0,
     platform: item?.platform || "",

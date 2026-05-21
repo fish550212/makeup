@@ -12,12 +12,12 @@ const emit = defineEmits(["select"]);
 </script>
 
 <template>
-  <section class="grid">
+  <TransitionGroup name="card-list" tag="section" class="grid" appear>
     <InventoryCard
       v-for="item in items"
       :key="item.id"
       :item="item"
       @select="emit('select', $event)"
     />
-  </section>
+  </TransitionGroup>
 </template>

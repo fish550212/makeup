@@ -56,21 +56,23 @@ onUnmounted(() => {
 
 <template>
   <Teleport to="body">
-    <div v-if="open" class="modal open" @click.self="guardClose ? requestClose() : emit('update:open', false)">
-      <div class="dialog" :class="{ wide }">
-        <div v-if="title" class="dialog-head">
-          <h2>{{ title }}</h2>
-          <button
-            class="close-btn"
-            type="button"
-            aria-label="關閉"
-            @click="guardClose ? requestClose() : emit('update:open', false)"
-          >
-            ×
-          </button>
+    <Transition name="modal-fade">
+      <div v-if="open" class="modal open" @click.self="guardClose ? requestClose() : emit('update:open', false)">
+        <div class="dialog" :class="{ wide }">
+          <div v-if="title" class="dialog-head">
+            <h2>{{ title }}</h2>
+            <button
+              class="close-btn"
+              type="button"
+              aria-label="關閉"
+              @click="guardClose ? requestClose() : emit('update:open', false)"
+            >
+              ×
+            </button>
+          </div>
+          <slot />
         </div>
-        <slot />
       </div>
-    </div>
+    </Transition>
   </Teleport>
 </template>

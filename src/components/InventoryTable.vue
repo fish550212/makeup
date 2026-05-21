@@ -1,7 +1,7 @@
 <script setup>
 import RatingStars from "./RatingStars.vue";
 import { money } from "../utils/format.js";
-import { isSold, itemFinalTotal, platformMerchant } from "../utils/item.js";
+import { isSold, itemFinalTotal, itemQuantity, platformMerchant } from "../utils/item.js";
 
 defineProps({
   items: {
@@ -26,9 +26,9 @@ const emit = defineEmits(["select"]);
           <th>總價</th>
           <th>購買平台</th>
           <th style="width: 60px">回購</th>
-          <th style="width: 130px">優點</th>
-          <th style="width: 130px">缺點</th>
-          <th style="width: 130px">詳細評論</th>
+          <th style="width: 150px">優點</th>
+          <th style="width: 150px">缺點</th>
+          <th style="width: 180px">詳細評論</th>
           <th>備註</th>
         </tr>
       </thead>
@@ -51,7 +51,7 @@ const emit = defineEmits(["select"]);
             <span v-else>庫存中</span>
           </td>
           <td>${{ money(item.price) }}</td>
-          <td>{{ item.quantity || 1 }}</td>
+          <td>{{ itemQuantity(item) }}</td>
           <td>${{ money(itemFinalTotal(item)) }}</td>
           <td>{{ platformMerchant(item.platform) }}</td>
           <td>{{ item.repurchase || "未填" }}</td>

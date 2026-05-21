@@ -2,7 +2,7 @@
 import BaseModal from "./BaseModal.vue";
 import RatingStars from "./RatingStars.vue";
 import { money } from "../utils/format.js";
-import { isSold, itemFinalTotal, itemImages, itemSaleAmount } from "../utils/item.js";
+import { isSold, itemFinalTotal, itemImages, itemQuantity, itemSaleAmount } from "../utils/item.js";
 
 defineProps({
   open: Boolean,
@@ -38,7 +38,7 @@ const emit = defineEmits(["update:open", "edit", "delete", "image"]);
         </div>
         <div class="field">
           <label>數量</label>
-          <div class="detail-value">{{ item.quantity || 1 }}</div>
+          <div class="detail-value">{{ itemQuantity(item) }}</div>
         </div>
         <div class="field">
           <label>單價</label>

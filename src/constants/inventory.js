@@ -28,7 +28,7 @@ export const EMPTY_ITEM = {
   brand: "",
   price: 0,
   rating: 0,
-  quantity: 1,
+  quantity: 0,
   sold: false,
   saleAmount: 0,
   platform: "",

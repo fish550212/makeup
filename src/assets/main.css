@@ -429,7 +429,23 @@ button {
   box-shadow: 0 8px 24px rgba(116, 39, 70, 0.06);
   overflow: hidden;
   cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
   will-change: transform, opacity;
+}
+
+.card:hover,
+.card:focus-visible {
+  border-color: rgba(223, 93, 134, 0.45);
+  box-shadow: 0 16px 34px rgba(116, 39, 70, 0.12);
+  transform: translateY(-4px);
+}
+
+.card:active {
+  transform: translateY(-1px) scale(0.995);
 }
 
 .card.sold-card {
@@ -448,6 +464,50 @@ button {
     background-color: #dfdfdf;
     color: #626262;
   }
+}
+
+.card.sold-card:hover,
+.card.sold-card:focus-visible {
+  border-color: #cdbbbb;
+  box-shadow: 0 12px 26px rgba(84, 84, 84, 0.1);
+  filter: grayscale(0.22);
+}
+
+.card-list-enter-active,
+.card-list-leave-active {
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s ease;
+}
+
+.card-list-enter-active:nth-child(2) {
+  transition-delay: 0.04s;
+}
+
+.card-list-enter-active:nth-child(3) {
+  transition-delay: 0.08s;
+}
+
+.card-list-enter-active:nth-child(4) {
+  transition-delay: 0.12s;
+}
+
+.card-list-enter-active:nth-child(5) {
+  transition-delay: 0.16s;
+}
+
+.card-list-enter-active:nth-child(6) {
+  transition-delay: 0.2s;
+}
+
+.card-list-enter-from,
+.card-list-leave-to {
+  opacity: 0;
+  transform: translateY(18px) scale(0.98);
+}
+
+.card-list-move {
+  transition: transform 0.28s ease;
 }
 
 .card-body {
@@ -814,7 +874,7 @@ button {
 }
 
 table {
-  width: 100%;
+  width: 100%; 
   min-width: 1460px;
   border-collapse: collapse;
   text-align: left;
@@ -867,6 +927,33 @@ tr:hover td {
 
 .modal.open {
   display: flex;
+}
+
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition:
+    opacity 0.16s ease,
+    backdrop-filter 0.16s ease;
+}
+
+.modal-fade-enter-active .dialog,
+.modal-fade-leave-active .dialog {
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+  opacity: 0;
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
+}
+
+.modal-fade-enter-from .dialog,
+.modal-fade-leave-to .dialog {
+  opacity: 0;
+  transform: translateY(12px);
 }
 
 .saving-overlay {

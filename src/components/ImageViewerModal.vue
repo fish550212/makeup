@@ -12,11 +12,15 @@ const emit = defineEmits(["update:open"]);
 
 <template>
   <Teleport to="body">
-    <div v-if="open" class="modal open" @click.self="emit('update:open', false)">
-      <div class="dialog image-viewer-dialog">
-        <button class="close-btn image-viewer-close" type="button" aria-label="關閉" @click="emit('update:open', false)">×</button>
-        <img class="image-viewer-img" :src="src" alt="放大圖片" />
+    <Transition name="modal-fade">
+      <div v-if="open" class="modal open" @click.self="emit('update:open', false)">
+        <div class="dialog image-viewer-dialog">
+          <button class="close-btn image-viewer-close" type="button" aria-label="關閉" @click="emit('update:open', false)">
+            ×
+          </button>
+          <img class="image-viewer-img" :src="src" alt="放大圖片" />
+        </div>
       </div>
-    </div>
+    </Transition>
   </Teleport>
 </template>

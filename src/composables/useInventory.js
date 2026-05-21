@@ -33,7 +33,10 @@ export function useInventory(selectedCategory) {
   });
 
   const totalInventoryAmount = computed(() =>
-    items.value.reduce((total, item) => total + itemFinalTotal(item), 0),
+    items.value.reduce((total, item) => {
+      const itemTotal = itemFinalTotal(item);
+      return itemTotal > 0 ? total + itemTotal : total;
+    }, 0),
   );
 
   function setStatus(message, isError = false) {

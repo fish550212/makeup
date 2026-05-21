@@ -4,7 +4,7 @@ import BaseModal from "./BaseModal.vue";
 import ImagePreview from "./ImagePreview.vue";
 import UnsavedChangesModal from "./UnsavedChangesModal.vue";
 import { readImageFile } from "../composables/useImageFiles.js";
-import { toEditableItem } from "../utils/item.js";
+import { itemQuantity, toEditableItem } from "../utils/item.js";
 
 const props = defineProps({
   open: Boolean,
@@ -38,7 +38,7 @@ function normalizeForm(value) {
     category: String(value.category || ""),
     price: Number(value.price) || 0,
     rating: Number(value.rating) || 0,
-    quantity: Number(value.quantity) || 1,
+    quantity: itemQuantity(value),
     sold: Boolean(value.sold),
     saleAmount: Number(value.saleAmount) || 0,
     platform: String(value.platform || "").trim(),
@@ -129,7 +129,7 @@ function discardAndClose() {
 
           <div class="field">
             <label for="quantityInput">數量</label>
-            <input id="quantityInput" v-model.number="form.quantity" type="number" min="1" inputmode="numeric" />
+            <input id="quantityInput" v-model.number="form.quantity" type="number" min="0" inputmode="numeric" />
           </div>
 
           <div class="field">

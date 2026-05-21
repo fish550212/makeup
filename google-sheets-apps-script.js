@@ -131,7 +131,7 @@ function rowToItem(row, headerMap) {
     category: cell(row, headerMap, "分類"),
     price: parseMoney(cell(row, headerMap, "單價")),
     rating: normalizeRating(cell(row, headerMap, "評價")),
-    quantity: Number(cell(row, headerMap, "量")) || 1,
+    quantity: Number(cell(row, headerMap, "量")) || 0,
     sold: parseSold(cell(row, headerMap, "狀態")),
     saleAmount: parseMoney(cell(row, headerMap, "賣出金額")),
     platform: cell(row, headerMap, "購買平台"),
@@ -219,7 +219,7 @@ function writeItem(sheet, rowNumber, item, previous) {
   const now = new Date().toISOString();
   const price = Number(item.price) || 0;
   const rating = normalizeRating(item.rating);
-  const quantity = Number(item.quantity) || 1;
+  const quantity = Number(item.quantity) || 0;
   const sold = parseSold(item.sold);
   const saleAmount = sold ? Number(item.saleAmount) || 0 : 0;
   const total = Math.max(0, price * quantity - saleAmount);
